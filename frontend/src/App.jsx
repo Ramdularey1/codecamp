@@ -5,7 +5,7 @@ function App() {
   
   return (
     <>
-      <main className="bg-gradient-to-b from-[#383636] to-[#090909] h-screen w-screen">
+      <main className="bg-gradient-to-b from-[#383636] to-[#090909] h-[100%] w-screen">
         <Home/>
         
       </main>
