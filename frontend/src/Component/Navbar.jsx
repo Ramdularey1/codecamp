@@ -60,7 +60,7 @@ const Navbar = () => {
           ref={menuRef}
           className="md:hidden bg-black text-white flex flex-col items-center p-4 absolute right-0 w-[350px] rounded-b-md"
         >
-          <h1 className="py-2" onClick={toggleMenu}>Problem</h1>
+          <Link to = "/problem" className="py-2" onClick={toggleMenu}>Problem</Link>
           <h1 className="py-2" onClick={toggleMenu}>Dark&White</h1>
           <h1 className="py-2" onClick={toggleMenu}>Account</h1>
         </div>
