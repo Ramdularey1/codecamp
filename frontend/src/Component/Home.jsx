@@ -15,6 +15,9 @@ const Home = () => {
         <Card customClass = "mt-[60px] text-white flex justify-center gap-2 flex-wrap"/>
         </div>
        
+       <div className="h-[150px]">
+        <h1 className="text-white ">footer</h1>
+       </div>
 
         </>
     )
