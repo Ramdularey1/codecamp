@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -38,7 +39,8 @@ const Navbar = () => {
         <div className="mx-[40px]">logo</div>
         <div className="mx-[40px] flex items-center justify-between w-full md:w-[600px]">
           <div className="hidden md:flex items-center justify-around w-full">
-            <h1>Problem</h1>
+            
+            <Link to = "/problem">Problem</Link>
             <h1>Dark&White</h1>
             <h1>Account</h1>
           </div>
