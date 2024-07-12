@@ -9,6 +9,10 @@ const testCaseSchema = new Schema({
      output:{
         type:String,
         require:true
+     },
+     explanation:{
+        type:String,
+        require:true
      }
 })
 
