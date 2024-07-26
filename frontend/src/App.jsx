@@ -1,10 +1,13 @@
 import Navbar from "./Component/Navbar";
+import Login from "./Component/auth/Login";
+import Registration from "./Component/auth/Register";
 import Home from "./Component/Home";
 import Problem from "./Component/problem";
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import CodeSections from "./Component/CodeSection";
 import { useNavigate } from "react-router-dom";
+import Compilar from "./Component/Compilar";
 
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { store } from "./utils/store";
@@ -19,6 +22,11 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/problem" element={<Problem />} />
             <Route path="/code/:id" element={<CodeSections />} />
+            <Route path="/compilar" element={<Compilar />} />
+          </Routes>
+          <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Registration />} />
           </Routes>
         </main>
       </Router>
