@@ -1,45 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { updateAllProblems } from "../utils/allProblemSlice";
-import axios from "axios";
-import Navbar from "./Navbar";
-import { useNavigate } from 'react-router-dom';
 
-const Problem = () => {
-  const [message, setMessage] = useState('');
-  const [data, setData] = useState([]);
-  const problems = useSelector((state) => state.allproblems.allProblems);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("http://localhost:8000/api/v1/users/getproblem", { withCredentials: true });
-        setData(response.data.data);
-        dispatch(updateAllProblems(response.data.data));
-      } catch (error) {
-        console.log("Failed to fetch data", error);
-      }
-    };
-
-    fetchData();
-  }, [dispatch]);
-
-  const handleSolveProblem = (id) => {
-    const userData = JSON.parse(localStorage.getItem('user'));
-    if (!userData) {
-    
-      navigate('/signup', { state: { from: 'solveProblem' } });
-      return;
-    }
-    navigate(`/code/${id}`);
-  };
-
-  return (
-    <>
-      <Navbar />
-      <div className="flex justify-center h-[100%] p-10">
+const ProblemCategory = ({data}) => {
+    return(
+        <div className="flex justify-center h-[100%] p-10">
         <div className="text-[#dbd7d7] bg-[#423f3f] w-10/12 flex flex-col p-5 ">
           <div className="relative">
             <h1 className="text-[30px] ">
@@ -78,8 +41,6 @@ const Problem = () => {
           )}
         </div>
       </div>
-    </>
-  );
-};
-
-export default Problem;
+    )
+}
+export default ProblemCategory;

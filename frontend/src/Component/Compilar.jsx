@@ -80,9 +80,9 @@ if __name__ == "__main__":
   };
 
   return (
-    <div className="flex w-full h-screen">
-      {/* left */}
-      <div className="w-1/2 flex flex-col">
+    <div className="flex flex-col md:flex-row w-full h-screen">
+      {/* Left */}
+      <div className="flex flex-col md:w-1/2 w-full h-full">
         <div className="bg-gray-900 text-white p-4 flex justify-between items-center">
           <select
             className="bg-gray-800 text-white rounded-sm outline-none p-2"
@@ -95,10 +95,10 @@ if __name__ == "__main__":
             {/* Add more languages as needed */}
           </select>
         </div>
-        <div className="flex-1 pt-4">
+        <div className="flex-1 pt-4 relative">
           <div className="h-full">
             <Editor
-              height="100%" // Adjust height based on padding
+              height="calc(100vh - 140px)" // Adjust height based on padding and space for the button
               language={languageId === 4 ? "java" : languageId === 2 ? "cpp" : "python"}
               theme="vs-dark"
               value={sourceCode}
@@ -109,9 +109,9 @@ if __name__ == "__main__":
               }}
             />
           </div>
-          <div className="absolute left-[600px] top-[95%]">
+          <div className="flex absolute right-4 bottom-[70px] justify-center mt-2">
             <button
-              className="text-green-600 border-2 w-[100px] border-green-800 hover:bg-green-700 hover:text-white rounded"
+              className="text-green-600 border-2 border-green-800 hover:bg-green-700 hover:text-white rounded p-2"
               onClick={handleSubmit}
             >
               Submit
@@ -120,8 +120,8 @@ if __name__ == "__main__":
         </div>
       </div>
 
-      {/* right */}
-      <div className="w-1/2 bg-black text-white p-4">
+      {/* Right */}
+      <div className="flex flex-col md:w-1/2 w-full bg-black text-white p-4 h-full">
         <h1 className="mb-4">Your result will appear here</h1>
         {submissionResult && (
           <div className="p-4 rounded-lg bg-black text-white font-mono text-sm h-full overflow-auto">

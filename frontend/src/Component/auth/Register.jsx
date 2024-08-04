@@ -34,7 +34,7 @@ function Registration() {
   };
 
   // Prevent direct access to the signup page
-  if (location.state?.from !== 'solveProblem' && location.state?.from !== 'login') {
+  if (location.state?.from !== 'solveProblem' && location.state?.from !== 'login' && location.state?.from !== 'register') {
     return <Navigate to="/" />;
   }
 

@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import { useParams } from "react-router-dom";
@@ -13,7 +12,6 @@ const CodeSections = () => {
 
     const problems = useSelector((state) => state.allproblems.allProblems);
     const currentProblem = useSelector((state) => state.currentProblem.currentProblem);
-    console.log(problems)
 
     const [sourceCode, setSourceCode] = useState("");
     const [languageId, setLanguageId] = useState(4); // Default language ID for Java
@@ -41,12 +39,10 @@ def main():
 
 if __name__ == "__main__":
     main()`,
-        
     };
 
     useEffect(() => {
         const selectedProblem = problems.find((item) => item._id === id);
-        console.log("selected problem", selectedProblem);
         if (selectedProblem) {
             dispatch(updateCurrentProblem(selectedProblem));
         }
@@ -58,24 +54,21 @@ if __name__ == "__main__":
     }, [languageId]);
 
     const handleSubmit = async () => {
-      try {
-          const testCaseInputs = currentProblem.testCases.map(testCase => testCase.input);
-          const response = await axios.post('http://localhost:8000/api/v1/users/submit-code', {
-              
-              problemId: id,
-              source_code: sourceCode,
-              language_id: languageId,
-              stdin: testCaseInputs,
-          });
-  
-          console.log("Submission response:", response.data);
-          setSubmissionResult(response.data.data); 
-      } catch (error) {
-          console.error("Error submitting code:", error);
-          
-      }
-  };
-  
+        try {
+            const testCaseInputs = currentProblem.testCases.map(testCase => testCase.input);
+            const response = await axios.post('http://localhost:8000/api/v1/users/submit-code', {
+                problemId: id,
+                source_code: sourceCode,
+                language_id: languageId,
+                stdin: testCaseInputs,
+            });
+
+            console.log("Submission response:", response.data);
+            setSubmissionResult(response.data.data);
+        } catch (error) {
+            console.error("Error submitting code:", error);
+        }
+    };
 
     const handleClearResult = () => {
         setSubmissionResult(null);
@@ -84,29 +77,32 @@ if __name__ == "__main__":
     return (
         <>
             <Navbar />
-
-            <div className="flex flex-row h-screen">
+            <div className="flex flex-col md:flex-row ">
                 {/* Left section */}
-                <div className="w-[50%] bg-gray-900 text-white overflow-auto">
+                <div className="md:w-1/2 w-full bg-gray-900 text-white overflow-auto">
                     <div className="p-6 border-b border-gray-700">
-                        <h1 className="text-2xl font-bold">{currentProblem?.title}</h1>
+                        <h1 className="text-2xl font-bold">{currentProblem?.title || "Loading..."}</h1>
                         <p className="text-sm mt-2 text-gray-400 font-medium">
-                            Difficulty: <span className="font-extrabold">{currentProblem?.difficulty}</span>
+                            Difficulty: <span className="font-extrabold">{currentProblem?.difficulty || "Loading..."}</span>
                         </p>
                     </div>
                     <div className="p-6 text-gray-300">
                         <div>
-                            <h3>{currentProblem?.description}</h3>
+                            <h3>{currentProblem?.description || "Loading description..."}</h3>
                         </div>
                         <div className="mt-6">
                             <h1 className="font-bold text-lg">Example:</h1>
-                            {currentProblem?.testCases?.map((item, index) => (
-                                <div key={index} className="mt-4 bg-gray-800 text-gray-300 rounded-md p-3 flex flex-col gap-2 border border-gray-700">
-                                    <h1 className="font-semibold">Input: <span className="font-normal">{item.input}</span></h1>
-                                    <h1 className="font-semibold">Output: <span className="font-normal">{item.output}</span></h1>
-                                    <h1 className="font-semibold">Explanation: <span className="font-normal">{item.explanation}</span></h1>
-                                </div>
-                            ))}
+                            {currentProblem?.testCases?.length > 0 ? (
+                                currentProblem.testCases.map((item, index) => (
+                                    <div key={index} className="mt-4 bg-gray-800 text-gray-300 rounded-md p-3 flex flex-col gap-2 border border-gray-700">
+                                        <h1 className="font-semibold">Input: <span className="font-normal">{item.input}</span></h1>
+                                        <h1 className="font-semibold">Output: <span className="font-normal">{item.output}</span></h1>
+                                        <h1 className="font-semibold">Explanation: <span className="font-normal">{item.explanation}</span></h1>
+                                    </div>
+                                ))
+                            ) : (
+                                <p className="text-gray-400">No test cases available</p>
+                            )}
                             <div className="mt-6">
                                 <h1 className="font-bold text-lg">Expected Time Complexity: <span className="font-normal">O(n)</span></h1>
                                 <h1 className="font-bold text-lg">Expected Auxiliary Space: <span className="font-normal">O(1)</span></h1>
@@ -120,7 +116,7 @@ if __name__ == "__main__":
                 </div>
 
                 {/* Right section */}
-                <div className="w-[50%] flex flex-col">
+                <div className="md:w-1/2 w-full flex flex-col">
                     <div className="bg-gray-900 text-white p-4 flex justify-between items-center">
                         <select
                             className="bg-gray-800 text-white rounded-sm outline-none p-2"
@@ -130,14 +126,13 @@ if __name__ == "__main__":
                             <option value="4">Java</option>
                             <option value="2">C++</option>
                             <option value="28">Python</option>
-                           
                         </select>
                     </div>
                     <div className="flex-1 pt-4">
                         <div className="h-full">
                             <Editor
-                                height="100%" 
-                                language={languageId === 4 ? "java" : languageId === 54 ? "cpp" : "python"}
+                                height="calc(100vh - 130px)" // Adjust height based on padding and select height
+                                language={languageId === 4 ? "java" : languageId === 2 ? "cpp" : "python"}
                                 theme="vs-dark"
                                 value={sourceCode}
                                 onChange={(value) => setSourceCode(value)}
@@ -147,9 +142,9 @@ if __name__ == "__main__":
                                 }}
                             />
                         </div>
-                        <div className="absolute right-10 top-[95%]">
+                        <div className="flex justify-center md:absolute bottom-2 md:right-4  mt-4">
                             <button
-                                className="text-green-600 border-2 w-[100px] border-green-800 hover:bg-green-700 hover:text-white rounded"
+                                className="text-green-600 border-2 border-green-800 hover:bg-green-700 hover:text-white rounded p-2"
                                 onClick={handleSubmit}
                             >
                                 Submit
@@ -160,7 +155,7 @@ if __name__ == "__main__":
             </div>
 
             {submissionResult && (
-                <div className="absolute top-[180px] left-[20px] bg-gray-700 text-white p-6 rounded-lg w-[47%]">
+                <div className="absolute md:top-[180px]  md:left-[20px] bg-gray-700 text-white p-6 md:rounded-lg w-full md:w-[47%]">
                     <h2 className="text-lg font-bold">Submission Result:</h2>
                     {submissionResult.map((result, index) => (
                         <div key={index} className="mt-4">
@@ -168,23 +163,20 @@ if __name__ == "__main__":
                             <p>Input: {result.input}</p>
                             <p>Expected Output: {result.expectedOutput}</p>
                             <p>Actual Output: {result.actualOutput}</p>
+                            <p>Compiler Output: {result.compile_output}</p>
                             <p>Status: {result.passed ? 'Passed' : 'Failed'}</p>
                         </div>
                     ))}
                     <button
-                        className="mt-4 text-red-600 border-2 w-[100px] border-red-800 hover:bg-red-700 hover:text-white rounded"
+                        className="mt-4 text-red-600 border-2 border-red-800 hover:bg-red-700 hover:text-white rounded p-2"
                         onClick={handleClearResult}
                     >
                         Clear Result
                     </button>
                 </div>
             )}
-
         </>
     );
 };
 
 export default CodeSections;
-
-
-
