@@ -8,10 +8,14 @@ import { PersistGate } from 'redux-persist/integration/react';
 import CodeSections from "./Component/CodeSection";
 import { useNavigate } from "react-router-dom";
 import Compilar from "./Component/Compilar";
-
+import EasyProblem from "./Component/EasyProblem";
+import MediumProblem from "./Component/MediumProblem";
+import HardProblem from "./Component/HardProblem";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { store } from "./utils/store";
 import { persistor } from "./utils/store";
+
+
 function App() {
   return (
     <Provider store={store}>
@@ -27,6 +31,9 @@ function App() {
           <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Registration />} />
+          <Route path="/easyProblem" element={<EasyProblem />} />
+          <Route path="/mediumProblem" element={<MediumProblem />} />
+          <Route path="/hardProblem" element={<HardProblem />} />
           </Routes>
         </main>
       </Router>

@@ -1,6 +1,21 @@
-
+import { useNavigate } from "react-router-dom";
 
 const ProblemCategory = ({data}) => {
+    const navigate = useNavigate();
+
+
+
+    const handleSolveProblem = (id) => {
+        const userData = JSON.parse(localStorage.getItem('user'));
+        if (!userData) {
+        
+          navigate('/signup', { state: { from: 'solveProblem' } });
+          return;
+        }
+        navigate(`/code/${id}`);
+      };
+
+
     return(
         <div className="flex justify-center h-[100%] p-10">
         <div className="text-[#dbd7d7] bg-[#423f3f] w-10/12 flex flex-col p-5 ">
@@ -9,9 +24,9 @@ const ProblemCategory = ({data}) => {
               Top <br />
               <span className="text-green-600">DSA</span> Problem
             </h1>
-            <div className="absolute right-16">
+            {/* <div className="absolute right-16">
               {message && <p>{message}</p>}
-            </div>
+            </div> */}
           </div>
           {data.length === 0 ? (
             <p>Loading...</p>
