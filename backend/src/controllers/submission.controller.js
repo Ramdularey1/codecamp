@@ -22,7 +22,7 @@ export const submitCode = async (req, res) => {
                 stdin: testCase.input
             }, {
                 headers: {
-                    'x-rapidapi-key': 'e1bf0af75amshab68da3c814f646p1daf8ejsn1b95b7e99d3c', // Replace with your actual API key
+                    'x-rapidapi-key': 'e1bf0af75amshab68da3c814f646p1daf8ejsn1b95b7e99d3c', 
                     'x-rapidapi-host': 'judge0-extra-ce.p.rapidapi.com',
                     'Content-Type': 'application/json'
                 },
@@ -37,6 +37,7 @@ export const submitCode = async (req, res) => {
             }
 
             const { stdout, stderr, compile_output } = response.data;
+            
 
             // Compare outputs against expected results
             const expectedOutput = testCase.output.trim();
@@ -71,93 +72,6 @@ export const submitCode = async (req, res) => {
         res.status(500).json({ error: 'Something went wrong while sending code to judge!' });
     }
 };
-
-
-
-// import Submission from "../models/submission.model.js";
-// import Problem from "../models/Problem.model.js";
-// import axios from "axios";
-
-// export const submitCode = async (req, res) => {
-//     const { userId, problemId, source_code, language_id } = req.body;
-
-//     try {
-//         // Find the problem to get the test cases
-//         const problem = await Problem.findById(problemId);
-//         if (!problem) {
-//             return res.status(404).json({ error: 'Problem not found' });
-//         }
-
-//         // Iterate over each test case and send the code to Judge0
-//         const testCaseResults = [];
-//         let passedCount = 0;
-//         for (let testCase of problem.testCases) {
-//             const response = await axios.post('https://judge0-extra-ce.p.rapidapi.com/submissions', {
-//                 source_code,
-//                 language_id,
-//                 stdin: JSON.stringify(testCase.input)  // Pass input as JSON string
-//             }, {
-//                 headers: {
-//                     'x-rapidapi-key': 'e1bf0af75amshab68da3c814f646p1daf8ejsn1b95b7e99d3c', // Replace with your actual API key
-//                     'x-rapidapi-host': 'judge0-extra-ce.p.rapidapi.com',
-//                     'Content-Type': 'application/json'
-//                 },
-//                 params: {
-//                     base64_encoded: 'false',
-//                     wait: 'true',
-//                 },
-//             });
-
-//             if (response.status !== 200) {
-//                 throw new Error(`Submission failed with status ${response.status}`);
-//             }
-
-//             const { stdout, stderr, compile_output } = response.data;
-
-//             // Convert outputs to strings for comparison
-//             const expectedOutput = JSON.stringify(testCase.output);
-//             const actualOutput = stdout ? stdout.trim() : (stderr || compile_output || "").trim();
-//             const passed = actualOutput === expectedOutput;
-//             if (passed) passedCount++;
-
-//             testCaseResults.push({
-//                 input: JSON.stringify(testCase.input),
-//                 expectedOutput,
-//                 actualOutput,
-//                 passed,
-//                 type: 'sample'  // Mark the test case type as sample
-//             });
-//         }
-
-//         // Save submission details
-//         const submission = new Submission({
-//             user: userId,
-//             problem: problemId,
-//             source_code,
-//             language_id,
-//             result: {
-//                 status: 'completed',
-//                 testCaseResults, // Store the detailed test case results
-//             }
-//         });
-
-//         await submission.save();
-//         res.json({
-//             data: {
-//                 totalTestCases: problem.testCases.length,
-//                 passedTestCases: passedCount,
-//                 testCaseResults
-//             }
-//         });
-
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ error: 'Something went wrong while sending code to judge!' });
-//     }
-// };
-
-
-
 
 export const getSubmissionsByUser = async(req, res) => {
     const {userId} = req.params;
