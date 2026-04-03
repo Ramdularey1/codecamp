@@ -1,5 +1,6 @@
 import Problem from "../models/Problem.model.js"
 import { ApiError } from "../utils/ApiError.js";
+import Submission from "../models/submission.model.js";
 
 
 
@@ -32,4 +33,16 @@ export const addProblem = async (req, res) => {
         console.error(error);
         res.status(500).json({ error: 'Failed to add problem' });
     }
+}
+
+export const getproblemById = async (req, res) => {
+     try {
+   const submission = await Submission.findById(req.params.id)
+      .populate("problem")
+      .populate("user");
+
+   res.json({ data: submission });
+   } catch (err) {
+   res.status(500).json({ error: "Failed to fetch submission" });
+  }
 }

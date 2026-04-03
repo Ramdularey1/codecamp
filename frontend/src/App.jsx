@@ -14,6 +14,8 @@ import HardProblem from "./Component/HardProblem";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { store } from "./utils/store";
 import { persistor } from "./utils/store";
+import SubmissionHistory from "./Component/SubmissionHistory";
+import SubmissionDetails from "./Component/SubmissionDetails";
 
 
 function App() {
@@ -28,6 +30,8 @@ function App() {
             <Route path="/problem" element={<Problem />} />
             <Route path="/code/:id" element={<CodeSections />} />
             <Route path="/compilar" element={<Compilar />} />
+            <Route path="/submissions" element={<SubmissionHistory />} />
+            <Route path="/submission/:id" element={<SubmissionDetails />} />
           </Routes>
           <Routes>
           <Route path="/login" element={<Login />} />

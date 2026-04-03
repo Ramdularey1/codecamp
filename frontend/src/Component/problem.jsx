@@ -7,16 +7,17 @@ import Navbar from "./Navbar";
 import ProblemCategory from "./ProblemCategory";
 
 const Problem = () => {
-  
   const [data, setData] = useState([]);
   const problems = useSelector((state) => state.allproblems.allProblems);
   const dispatch = useDispatch();
-  
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8000/api/v1/users/getproblem", { withCredentials: true });
+        const response = await axios.get(
+          "http://localhost:8000/api/v1/users/getproblem",
+          { withCredentials: true },
+        );
         setData(response.data.data);
         dispatch(updateAllProblems(response.data.data));
       } catch (error) {
@@ -27,12 +28,10 @@ const Problem = () => {
     fetchData();
   }, [dispatch]);
 
- 
-
   return (
     <>
       <Navbar />
-      <ProblemCategory data = {data}/>
+      <ProblemCategory data={data} />
     </>
   );
 };

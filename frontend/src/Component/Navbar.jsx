@@ -104,7 +104,7 @@ const Navbar = () => {
         <div className="mx-[40px] flex items-center justify-between w-full md:w-[600px]">
           <div className="hidden relative md:flex items-center justify-around w-full">
             <Link to="/problem">Problem</Link>
-
+             <Link to="/submissions">Submissions</Link>
             <Link to="/compilar">Compilar</Link>
             <button onClick={handleAccount}>Account</button>
 

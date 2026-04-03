@@ -39,23 +39,24 @@ if __name__ == "__main__":
   const handleSubmit = async () => {
     try {
       const response = await axios.post(
-        'https://judge0-extra-ce.p.rapidapi.com/submissions',
+        "https://judge0-extra-ce.p.rapidapi.com/submissions",
         {
           source_code: sourceCode,
           language_id: languageId,
-          stdin: '', // Adjust this as necessary to provide input for the code
+          stdin: "", // Adjust this as necessary to provide input for the code
         },
         {
           headers: {
-            'x-rapidapi-key': 'e1bf0af75amshab68da3c814f646p1daf8ejsn1b95b7e99d3c',
-            'x-rapidapi-host': 'judge0-extra-ce.p.rapidapi.com',
-            'Content-Type': 'application/json'
+            "x-rapidapi-key":
+              "e1bf0af75amshab68da3c814f646p1daf8ejsn1b95b7e99d3c",
+            "x-rapidapi-host": "judge0-extra-ce.p.rapidapi.com",
+            "Content-Type": "application/json",
           },
           params: {
-            base64_encoded: 'false',
-            wait: 'true',
+            base64_encoded: "false",
+            wait: "true",
           },
-        }
+        },
       );
 
       console.log("Submission response:", response.data);
@@ -99,7 +100,9 @@ if __name__ == "__main__":
           <div className="h-full">
             <Editor
               height="calc(100vh - 140px)" // Adjust height based on padding and space for the button
-              language={languageId === 4 ? "java" : languageId === 2 ? "cpp" : "python"}
+              language={
+                languageId === 4 ? "java" : languageId === 2 ? "cpp" : "python"
+              }
               theme="vs-dark"
               value={sourceCode}
               onChange={(value) => setSourceCode(value)}
@@ -121,22 +124,54 @@ if __name__ == "__main__":
       </div>
 
       {/* Right */}
-      <div className="flex flex-col md:w-1/2 w-full bg-black text-white p-4 h-full">
-        <h1 className="mb-4">Your result will appear here</h1>
+      <div className="flex flex-col md:w-1/2 w-full bg-gray-900 text-white p-4 h-full relative">
+        <h1 className="mb-4 text-gray-300">Your result will appear here</h1>
+
         {submissionResult && (
-          <div className="p-4 rounded-lg bg-black text-white font-mono text-sm h-full overflow-auto">
-            <h2 className="text-lg font-bold mb-4">Submission Result:</h2>
-            <div className="mt-4">
-              <p><span className="text-green-400">Status:</span> {submissionResult.status.description}</p>
-              <p><span className="text-green-400">Output:</span> {submissionResult.stdout}</p>
-              <p><span className="text-red-400">Error:</span> {submissionResult.stderr}</p>
-            </div>
+          <div className="relative p-4 rounded-lg bg-gray-800 text-white font-mono text-sm h-full overflow-auto border border-gray-700">
+            {/* 🔥 Clear Button (Top Right) */}
             <button
-              className="mt-4 text-red-600 border-2 border-red-800 hover:bg-red-700 hover:text-white rounded p-2"
+              className="absolute top-3 right-3 text-red-400 border border-red-600 hover:bg-red-600 hover:text-white rounded px-3 py-1 text-sm"
               onClick={handleClearResult}
             >
-              Clear Result
+              Clear
             </button>
+
+            {/* 🔥 Status */}
+            <h2 className="text-lg font-bold mb-4">
+              Status:{" "}
+              <span
+                className={
+                  submissionResult.status?.description === "Accepted"
+                    ? "text-green-400"
+                    : "text-red-400"
+                }
+              >
+                {submissionResult.status?.description || "Unknown"}
+              </span>
+            </h2>
+
+            {/* 🔥 Output Section */}
+            <div className="space-y-2">
+              <p>
+                <span className="font-semibold text-green-400">Output:</span>{" "}
+                {submissionResult.stdout || "—"}
+              </p>
+
+              <p>
+                <span className="font-semibold text-red-400">Error:</span>{" "}
+                {submissionResult.stderr || "—"}
+              </p>
+
+              {submissionResult.compile_output && (
+                <p>
+                  <span className="font-semibold text-yellow-400">
+                    Compiler:
+                  </span>{" "}
+                  {submissionResult.compile_output}
+                </p>
+              )}
+            </div>
           </div>
         )}
       </div>
