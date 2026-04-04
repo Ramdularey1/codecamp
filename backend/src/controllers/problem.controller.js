@@ -46,3 +46,67 @@ export const getproblemById = async (req, res) => {
    res.status(500).json({ error: "Failed to fetch submission" });
   }
 }
+
+export const getLeaderboard = async (req, res) => {
+  try {
+    const leaderboard = await Submission.aggregate([
+      {
+        $match: {
+          "result.status": "Accepted",
+        },
+      },
+      {
+        $group: {
+          _id: "$user",
+          solved: { $sum: 1 },
+        },
+      },
+      {
+        $sort: { solved: -1 },
+      },
+      {
+        $limit: 10,
+      },
+    ]);
+
+    // populate user details
+    const populated = await Submission.populate(leaderboard, {
+      path: "_id",
+      select: "name email",
+    });
+
+    res.json({ data: populated });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch leaderboard" });
+  }
+};
+
+export const getUserStats = async (req, res) => {
+  try {
+    const { userId } = req.params;
+
+    const submissions = await Submission.find({ user: userId });
+
+    const total = submissions.length;
+
+    const accepted = submissions.filter(
+      (s) => s.result?.status === "Accepted"
+    ).length;
+
+    const wrong = total - accepted;
+
+    const successRate = total > 0 ? ((accepted / total) * 100).toFixed(2) : 0;
+
+    res.json({
+      total,
+      accepted,
+      wrong,
+      successRate,
+      recent: submissions.slice(-5).reverse(),
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to fetch stats" });
+  }
+};

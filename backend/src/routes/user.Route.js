@@ -4,6 +4,8 @@ import { registerUser, loginUser, logoutUser } from "../controllers/user.control
 import { submitCode } from "../controllers/submission.controller.js";
 import { getSubmissionsByUser } from "../controllers/submission.controller.js";
 import { getproblemById } from "../controllers/problem.controller.js";
+import { getLeaderboard } from "../controllers/problem.controller.js";
+import { getUserStats } from "../controllers/problem.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 const router = Router();
 
@@ -21,6 +23,8 @@ router.route("/submit-code").post(submitCode);
 router.route("/submissions/:userId").get(getSubmissionsByUser);
 router.route("/getproblem").get(getAllProblems);
 router.route("/getproblemById/:id").get(getproblemById);
+router.get("/leaderboard", getLeaderboard);
+router.get("/stats/:userId", getUserStats);
 
 export default router
     

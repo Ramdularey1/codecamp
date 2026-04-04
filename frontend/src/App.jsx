@@ -16,6 +16,8 @@ import { store } from "./utils/store";
 import { persistor } from "./utils/store";
 import SubmissionHistory from "./Component/SubmissionHistory";
 import SubmissionDetails from "./Component/SubmissionDetails";
+import Leaderboard from "./Component/Leaderboard";
+import Dashboard from "./Component/Dashboard";
 
 
 function App() {
@@ -32,6 +34,8 @@ function App() {
             <Route path="/compilar" element={<Compilar />} />
             <Route path="/submissions" element={<SubmissionHistory />} />
             <Route path="/submission/:id" element={<SubmissionDetails />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/dashboard" element={<Dashboard />} />
           </Routes>
           <Routes>
           <Route path="/login" element={<Login />} />
