@@ -22,7 +22,7 @@ const Dashboard = () => {
     const fetchStats = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/v1/users/stats/${userId}`
+          `https://codecamp-iffd.onrender.com/api/v1/users/stats/${userId}`
         );
         setStats(res.data);
       } catch (err) {

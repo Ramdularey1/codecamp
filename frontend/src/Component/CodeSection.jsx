@@ -65,7 +65,7 @@ if __name__ == "__main__":
         (testCase) => testCase.input,
       );
       const response = await axios.post(
-        "http://localhost:8000/api/v1/users/submit-code",
+        "https://codecamp-iffd.onrender.com/api/v1/users/submit-code",
         {
           problemId: id,
           userId: userId,

@@ -15,7 +15,7 @@ const Problem = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:8000/api/v1/users/getproblem",
+          "https://codecamp-iffd.onrender.com/api/v1/users/getproblem",
           { withCredentials: true },
         );
         setData(response.data.data);

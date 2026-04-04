@@ -62,7 +62,7 @@ const Navbar = () => {
     const logOut = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:8000/api/v1/users/logout",
+          "https://codecamp-iffd.onrender.com/api/v1/users/logout",
           {},
           {
             withCredentials: true

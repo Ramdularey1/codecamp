@@ -15,7 +15,7 @@ const SubmissionHistory = () => {
     const fetchSubmissions = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/v1/users/submissions/${userId}`,
+          `https://codecamp-iffd.onrender.com/api/v1/users/submissions/${userId}`,
         );
 
         setSubmissions(res.data.data || []);

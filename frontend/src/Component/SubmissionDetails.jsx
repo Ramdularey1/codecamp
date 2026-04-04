@@ -12,7 +12,7 @@ const SubmissionDetails = () => {
     const fetchSubmission = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/v1/users/getproblemById/${id}`
+          `https://codecamp-iffd.onrender.com/api/v1/users/getproblemById/${id}`
         );
         setSubmission(res.data.data);
       } catch (err) {

@@ -8,7 +8,7 @@ const Leaderboard = () => {
     const fetchLeaderboard = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:8000/api/v1/users/leaderboard"
+          "https://codecamp-iffd.onrender.com/api/v1/users/leaderboard"
         );
         setData(res.data.data);
       } catch (err) {

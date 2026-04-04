@@ -11,7 +11,7 @@ const ContestPage = () => {
     const fetchContest = async () => {
       try {
         const res = await axios.get(
-          `http://localhost:8000/api/v1/users/contest/${contestId}`
+          `https://codecamp-iffd.onrender.com/api/v1/users/contest/${contestId}`
         );
 
         setContest(res.data.data);
