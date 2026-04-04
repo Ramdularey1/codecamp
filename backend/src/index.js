@@ -14,8 +14,9 @@ dotenv.config({
 })
 
 app.use(cors({
-    origin: 'http://localhost:5173',
-    //   origin: 'https://vercel.com/ram-dulareys-projects/codecamp-api',
+    // origin: 'http://localhost:5173',
+      origin: 'https://codecamp-neon.vercel.app/',
+    
     credentials: true
 }));
 
