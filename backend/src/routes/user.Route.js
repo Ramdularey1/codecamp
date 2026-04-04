@@ -19,7 +19,7 @@ router.route("/test").get((_, res) => {
 
 router.route("/register").post(registerUser)
 router.route("/login").post(loginUser)
-router.route("/logout").post( logoutUser)
+router.route("/logout").post(verifyJWT, logoutUser)
 router.route("/addProblem").post(addProblem);
 router.route("/submit-code").post(submitCode);
 router.route("/submissions/:userId").get(getSubmissionsByUser);
