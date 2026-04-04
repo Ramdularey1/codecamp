@@ -27,7 +27,7 @@ const submissionSchema = new Schema({
           },
 }, {timestamps:true});
 
-const Submission = mongoose.model('submission', submissionSchema);
+const Submission = mongoose.models.Problem ||  mongoose.model('submission', submissionSchema);
 export default Submission;
 
 

@@ -110,3 +110,12 @@ export const getUserStats = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch stats" });
   }
 };
+
+export const getContest = async (req, res) => {
+  try {
+    const contest = await Contest.findById(req.params.id).populate("problems");
+    res.json({ data: contest });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch contest" });
+  }
+};

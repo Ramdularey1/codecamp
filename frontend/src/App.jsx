@@ -18,6 +18,7 @@ import SubmissionHistory from "./Component/SubmissionHistory";
 import SubmissionDetails from "./Component/SubmissionDetails";
 import Leaderboard from "./Component/Leaderboard";
 import Dashboard from "./Component/Dashboard";
+import ContestPage from "./Component/ContestPage";
 
 
 function App() {
@@ -36,6 +37,7 @@ function App() {
             <Route path="/submission/:id" element={<SubmissionDetails />} />
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/contest/:id" element={<ContestPage />} />
           </Routes>
           <Routes>
           <Route path="/login" element={<Login />} />

@@ -33,6 +33,10 @@ app.get("/",(req, res) => {
 
 import userRoute from "./routes/user.Route.js"
 
+app.use("/",(req, res) => {
+    res.send("Working")
+})
+
 
 app.use("/api/v1/users", userRoute);
 

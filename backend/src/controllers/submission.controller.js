@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import Submission from "../models/submission.model.js";
 import Problem from "../models/Problem.model.js";
+import Contest from "../models/Contest.model.js";
 
 import axios from "axios";
 import { ApiError } from "../utils/ApiError.js";
@@ -101,6 +102,25 @@ export const getSubmissionsByUser = async (req, res) => {
     return res.status(200).json({ data: submissions });
   } catch (error) {
     console.error("Error fetching submissions:", error);
+  }
+};
+export const createContest = async (req, res) => {
+  try {
+    const { title, problems, startTime, endTime } = req.body;
+
+    const contest = new Contest({
+      title,
+      problems, // array of problem IDs
+      startTime,
+      endTime,
+    });
+
+    await contest.save();
+
+    res.status(201).json({ data: contest });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Failed to create contest" });
   }
 };
 
