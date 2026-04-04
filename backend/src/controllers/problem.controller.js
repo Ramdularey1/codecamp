@@ -1,6 +1,6 @@
 import Problem from "../models/Problem.model.js"
 import { ApiError } from "../utils/ApiError.js";
-import Submission from "../models/submission.model.js";
+import Submission from "../models/Submission.model.js";
 
 
 

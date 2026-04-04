@@ -1,5 +1,5 @@
 import User from "../models/user.model.js";
-import Submission from "../models/submission.model.js";
+import Submission from "../models/Submission.model.js";
 import Problem from "../models/Problem.model.js";
 import Contest from "../models/Contest.model.js";
 
