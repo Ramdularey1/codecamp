@@ -13,6 +13,8 @@ dotenv.config({
     path: "./.env"
 })
 
+app.use(cookieparser());
+
 app.use(cors({
     // origin: 'http://localhost:5173',
       origin: 'https://codecamp-neon.vercel.app',
@@ -20,7 +22,7 @@ app.use(cors({
     credentials: true
 }));
 
-app.use(cookieparser());
+
 
 
 const Port = process.env.port || 3000;
