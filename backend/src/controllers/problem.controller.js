@@ -1,6 +1,8 @@
 import Problem from "../models/Problem.model.js"
 import { ApiError } from "../utils/ApiError.js";
 import Submission from "../models/Submission.model.js";
+import Contest from "../models/Contest.model.js";
+
 
 
 
@@ -114,10 +116,23 @@ export const getUserStats = async (req, res) => {
 
 export const getContest = async (req, res) => {
   try {
-    const contest = await Contest.findById(req.params.id).populate("problems");
+    const { id } = req.params;
+
+    console.log("Contest ID:", id);
+
+    const contest = await Contest.findById(id).populate("problems");
+
+    console.log("Contest Data:", contest); // ✅ debug
+
+    if (!contest) {
+      return res.status(404).json({ error: "Contest not found" });
+    }
+
     res.json({ data: contest });
+
   } catch (err) {
-    res.status(500).json({ error: "Failed to fetch contest" });
+    console.error("🔥 REAL ERROR:", err); // ✅ THIS WILL SHOW REAL ISSUE
+    res.status(500).json({ error: err.message }); // show real error
   }
 };
 
