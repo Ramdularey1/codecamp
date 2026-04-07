@@ -8,7 +8,7 @@ const ContestPage = () => {
 
   const { id } = useParams();
   const navigate = useNavigate();
-
+  
   useEffect(() => {
     let interval;
 

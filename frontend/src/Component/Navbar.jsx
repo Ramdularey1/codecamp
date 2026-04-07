@@ -1,18 +1,21 @@
 import axios from "axios";
 import React, { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import userImage from "../../public/user.png";
 import codecamp from "../../public/codecamp.png";
 
 const Navbar = () => {
-  const [contestId, setContestId] = useState("");
   const navigate = useNavigate();
+
   const [isOpen, setIsOpen] = useState(false);
   const [isLogoutVisible, setIsLogoutVisible] = useState(false);
+
   const menuRef = useRef(null);
   const logoutRef = useRef(null);
   const buttonRef = useRef(null);
+
+  // ✅ Contest ID (CHANGE THIS WHEN NEEDED)
+  const contestId = "69d4c20b528bd7ae9359a6ef";
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -37,18 +40,6 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-  const fetchContest = async () => {
-    const res = await axios.get(
-      "https://codecamp-iffd.onrender.com/api/v1/users/contest"
-    );
-    setContestId(res.data.data._id);
-  };
-  fetchContest();
-}, []);
- 
-console.log(contestId);
-
-  useEffect(() => {
     if (isOpen || isLogoutVisible) {
       document.addEventListener("mousedown", handleClickOutside);
     } else {
@@ -62,7 +53,6 @@ console.log(contestId);
 
   const handleClick = () => {
     navigate("/signup", { state: { from: "register" } });
-    return;
   };
 
   const handleLogoutToggle = () => {
@@ -73,122 +63,128 @@ console.log(contestId);
         const response = await axios.post(
           "https://codecamp-iffd.onrender.com/api/v1/users/logout",
           {},
-          {
-            withCredentials: true,
-          },
+          { withCredentials: true }
         );
+
         if (response.status >= 200 && response.status < 300) {
-          console.log("User logged out successfully");
-          localStorage.removeItem("user");
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
+          localStorage.clear();
           navigate("/");
         }
       } catch (error) {
         console.log(error);
       }
     };
+
     logOut();
   };
 
   const loginUser = localStorage.getItem("user");
   const user = JSON.parse(loginUser);
-  console.log(user);
 
   const handleLogin = () => {
     navigate("/signup", { state: { from: "login" } });
-    return;
   };
 
   return (
     <>
+      {/* 🔥 Navbar */}
       <div className="text-white flex justify-between items-center bg-black h-[60px]">
         <div className="mx-[40px]">
           <Link to={"/"}>
             <img
-              className="w-[80px] h-[60px] overflow-hidden"
+              className="w-[80px] h-[60px]"
               src={codecamp}
-              alt="logo not found"
+              alt="logo"
             />
           </Link>
         </div>
+
         <div className="mx-[40px] flex items-center justify-between w-full md:w-[600px]">
-          <div className="hidden relative md:flex items-center justify-around w-full">
+          
+          {/* 🔥 Desktop Menu */}
+          <div className="hidden md:flex items-center justify-around w-full">
             <Link to="/problem">Problem</Link>
             <Link to="/submissions">Submissions</Link>
             <Link to="/compilar">Compilar</Link>
-            <Link
-             to={`/contest/${contestId}`}
-              className="py-2"
-              onClick={toggleMenu}
-            >
-              Contest
-            </Link>
+
+            {/* ✅ Contest Link */}
+            <Link to={`/contest/${contestId}`}>Contest</Link>
+
             <button onClick={handleAccount}>Account</button>
 
+            {/* 🔥 Account Dropdown */}
             <div
               ref={logoutRef}
-              className={`z-[999] absolute text-white bg-[#1d1c1c] top-12 right-[0px] ${isLogoutVisible ? "block" : "hidden"}`}
+              className={`z-[999] absolute bg-[#1d1c1c] top-12 right-[40px] ${
+                isLogoutVisible ? "block" : "hidden"
+              }`}
             >
-              <div className="w-[250px] flex justify-center items-center flex-col p-4">
-                <div>
-                  <img
-                    className="w-[100px] h-[100px] rounded-md"
-                    src={userImage}
-                    alt="userImage not found"
-                  />
-                </div>
-                <h1>{user && user.data.username}</h1>
+              <div className="w-[250px] flex flex-col items-center p-4">
+                <img
+                  className="w-[100px] h-[100px] rounded-md"
+                  src={userImage}
+                  alt="user"
+                />
+
+                <h1>{user?.data?.username}</h1>
 
                 {user ? (
                   <h1 className="cursor-pointer" onClick={handleLogoutToggle}>
-                    logout
+                    Logout
                   </h1>
                 ) : (
                   <h1 className="cursor-pointer" onClick={handleLogin}>
-                    login
+                    Login
                   </h1>
                 )}
               </div>
             </div>
           </div>
+
+          {/* 🔥 Mobile Menu Button */}
           <div className="md:hidden absolute right-0 mx-[40px]">
             <button
               ref={buttonRef}
               onClick={toggleMenu}
               className="focus:outline-none"
-              aria-expanded={isOpen}
-              aria-controls="mobile-menu"
             >
               {isOpen ? "Close" : "Menu"}
             </button>
           </div>
         </div>
       </div>
+
+      {/* 🔥 Mobile Menu */}
       {isOpen && (
         <div
           ref={menuRef}
-          id="mobile-menu"
-          className="md:hidden bg-black text-white flex flex-col items-center p-4 absolute right-0 w-[350px] rounded-b-md"
+          className="md:hidden bg-black text-white flex flex-col items-center p-4 absolute right-0 w-[350px]"
         >
           <Link to="/problem" className="py-2" onClick={toggleMenu}>
             Problem
           </Link>
-          <div className="py-2 z-[999]" onClick={toggleMenu}>
-            <Link className="cursor-pointer" to="/compilar">
-              Compilar
-            </Link>
-          </div>
-          <div
-            className="py-2 z-[999]"
-            onClick={() => {
-              toggleMenu();
-              handleClick();
-            }}
+
+          {/* ✅ Contest Link */}
+          <Link
+            to={`/contest/${contestId}`}
+            className="py-2"
+            onClick={toggleMenu}
           >
+            Contest
+          </Link>
+
+          <Link
+            to="/compilar"
+            className="py-2"
+            onClick={toggleMenu}
+          >
+            Compilar
+          </Link>
+
+          <div className="py-2" onClick={toggleMenu}>
             {user ? (
               <h1 className="cursor-pointer" onClick={handleLogoutToggle}>
-                logout
+                Logout
               </h1>
             ) : (
               <h1 className="cursor-pointer" onClick={handleClick}>
