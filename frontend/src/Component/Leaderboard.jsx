@@ -23,27 +23,27 @@ const Leaderboard = () => {
     <div className="p-6 bg-gray-900 min-h-screen text-white">
       <h1 className="text-2xl font-bold mb-6">🏆 Leaderboard</h1>
 
-      <div className="space-y-3">
-        {data.map((user, index) => (
-          <div
-            key={index}
-            className="flex justify-between bg-gray-800 p-4 rounded border border-gray-700"
-          >
-            <div>
-              <p className="font-bold">
-                #{index + 1} {user._id?.name || "User"}
-              </p>
-              <p className="text-sm text-gray-400">
-                {user._id?.email}
-              </p>
-            </div>
+      <table className="w-full border border-gray-700">
+        <thead>
+          <tr className="bg-gray-800">
+            <th className="p-2">Rank</th>
+            <th className="p-2">User</th>
+            <th className="p-2">Score</th>
+          </tr>
+        </thead>
 
-            <p className="text-green-400 font-bold">
-              {user.solved} solved
-            </p>
-          </div>
-        ))}
-      </div>
+        <tbody>
+          {data.map((item, index) => (
+            <tr key={index} className="text-center border-t border-gray-700">
+              <td className="p-2">{index + 1}</td>
+              <td className="p-2">{item.user.username}</td>
+              <td className="p-2 text-green-400">
+                {item.totalScore}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

@@ -50,40 +50,40 @@ export const getproblemById = async (req, res) => {
   }
 }
 
-export const getLeaderboard = async (req, res) => {
-  try {
-    const leaderboard = await Submission.aggregate([
-      {
-        $match: {
-          "result.status": "Accepted",
-        },
-      },
-      {
-        $group: {
-          _id: "$user",
-          solved: { $sum: 1 },
-        },
-      },
-      {
-        $sort: { solved: -1 },
-      },
-      {
-        $limit: 10,
-      },
-    ]);
+// export const getLeaderboard = async (req, res) => {
+//   try {
+//     const leaderboard = await Submission.aggregate([
+//       {
+//         $match: {
+//           "result.status": "Accepted",
+//         },
+//       },
+//       {
+//         $group: {
+//           _id: "$user",
+//           solved: { $sum: 1 },
+//         },
+//       },
+//       {
+//         $sort: { solved: -1 },
+//       },
+//       {
+//         $limit: 10,
+//       },
+//     ]);
 
-    // populate user details
-    const populated = await Submission.populate(leaderboard, {
-      path: "_id",
-      select: "name email",
-    });
+//     // populate user details
+//     const populated = await Submission.populate(leaderboard, {
+//       path: "_id",
+//       select: "name email",
+//     });
 
-    res.json({ data: populated });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Failed to fetch leaderboard" });
-  }
-};
+//     res.json({ data: populated });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).json({ error: "Failed to fetch leaderboard" });
+//   }
+// };
 
 export const getUserStats = async (req, res) => {
   try {
@@ -133,6 +133,37 @@ export const getContest = async (req, res) => {
   } catch (err) {
     console.error("🔥 REAL ERROR:", err); // ✅ THIS WILL SHOW REAL ISSUE
     res.status(500).json({ error: err.message }); // show real error
+  }
+};
+
+export const getLeaderboard = async (req, res) => {
+  try {
+    const leaderboard = await Submission.aggregate([
+      {
+        $group: {
+          _id: "$user",
+          totalScore: { $sum: "$score" },
+        },
+      },
+      {
+        $sort: { totalScore: -1 },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "_id",
+          foreignField: "_id",
+          as: "user",
+        },
+      },
+      {
+        $unwind: "$user",
+      },
+    ]);
+
+    res.json({ data: leaderboard });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch leaderboard" });
   }
 };
 

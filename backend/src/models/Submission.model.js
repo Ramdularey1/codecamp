@@ -25,6 +25,10 @@ const submissionSchema = new Schema({
             stderr: { type: String },
             compile_output: { type: String },
           },
+          score: {
+  type: Number,
+  default: 0,
+},
 }, {timestamps:true});
 
 // const Submission = mongoose.models.Submission || mongoose.model('Submission', submissionSchema);
