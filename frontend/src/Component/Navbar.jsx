@@ -6,6 +6,7 @@ import userImage from "../../public/user.png";
 import codecamp from "../../public/codecamp.png";
 
 const Navbar = () => {
+  const [contestId, setContestId] = useState("");
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const [isLogoutVisible, setIsLogoutVisible] = useState(false);
@@ -34,6 +35,16 @@ const Navbar = () => {
       setIsLogoutVisible(false);
     }
   };
+
+  useEffect(() => {
+  const fetchContest = async () => {
+    const res = await axios.get(
+      "https://codecamp-iffd.onrender.com/api/v1/users/contest"
+    );
+    setContestId(res.data.data._id);
+  };
+  fetchContest();
+}, []);
 
   useEffect(() => {
     if (isOpen || isLogoutVisible) {
@@ -105,7 +116,7 @@ const Navbar = () => {
             <Link to="/submissions">Submissions</Link>
             <Link to="/compilar">Compilar</Link>
             <Link
-              to="/contest/69d4d64f59e37111f898a096"
+             to={`/contest/${contestId}`}
               className="py-2"
               onClick={toggleMenu}
             >
