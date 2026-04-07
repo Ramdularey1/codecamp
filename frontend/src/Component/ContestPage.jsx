@@ -1,24 +1,30 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useParams, useNavigate } from "react-router-dom";
 
 const ContestPage = () => {
   const [contest, setContest] = useState(null);
   const [timeLeft, setTimeLeft] = useState(0);
 
-  const contestId = "YOUR_CONTEST_ID"; // replace with real id
+  const { id } = useParams(); // ✅ dynamic contest id
+  const navigate = useNavigate();
 
   useEffect(() => {
+    let interval;
+
     const fetchContest = async () => {
       try {
         const res = await axios.get(
-          `https://codecamp-iffd.onrender.com/api/v1/users/contest/${contestId}`
+          `https://codecamp-iffd.onrender.com/api/v1/users/contest/${id}`
         );
 
-        setContest(res.data.data);
+        const contestData = res.data.data;
+        setContest(contestData);
 
-        const end = new Date(res.data.data.endTime).getTime();
+        const end = new Date(contestData.endTime).getTime();
 
-        const interval = setInterval(() => {
+        // ⏱ Timer
+        interval = setInterval(() => {
           const now = new Date().getTime();
           const diff = end - now;
 
@@ -30,12 +36,14 @@ const ContestPage = () => {
           }
         }, 1000);
       } catch (err) {
-        console.log(err);
+        console.log("Error fetching contest:", err);
       }
     };
 
-    fetchContest();
-  }, []);
+    if (id) fetchContest();
+
+    return () => clearInterval(interval); // ✅ cleanup
+  }, [id]);
 
   // ⏱ format time
   const formatTime = (ms) => {
@@ -47,12 +55,16 @@ const ContestPage = () => {
     return `${h}h ${m}m ${s}s`;
   };
 
-  if (!contest) return <p className="text-white p-6">Loading contest...</p>;
+  if (!contest)
+    return <p className="text-white p-6">Loading contest...</p>;
 
   return (
     <div className="p-6 bg-gray-900 min-h-screen text-white">
-      {/* 🔥 Title */}
-      <h1 className="text-2xl font-bold mb-4">{contest.title}</h1>
+      
+      {/* 🔥 Header */}
+      <h1 className="text-2xl font-bold mb-4">
+        {contest.title}
+      </h1>
 
       {/* 🔥 Timer */}
       <div className="mb-6 text-lg">
@@ -63,18 +75,24 @@ const ContestPage = () => {
       </div>
 
       {/* 🔥 Problems */}
-      <div className="space-y-3">
+      <div className="space-y-4">
         {contest.problems.map((p, index) => (
           <div
-            key={index}
-            className="bg-gray-800 p-4 rounded border border-gray-700"
+            key={p._id}
+            className="bg-gray-800 p-4 rounded border border-gray-700 flex justify-between items-center hover:bg-gray-700 transition"
           >
-            <p className="font-semibold">{p.title}</p>
-            <p className="text-gray-400">{p.difficulty}</p>
+            <div>
+              <p className="font-semibold">
+                {index + 1}. {p.title}
+              </p>
+              <p className="text-gray-400 text-sm">
+                {p.difficulty}
+              </p>
+            </div>
 
             <button
-              className="mt-2 text-blue-400 underline"
-              onClick={() => window.location.href = `/code/${p._id}`}
+              onClick={() => navigate(`/code/${p._id}`)} // ✅ SPA navigation
+              className="text-blue-400 hover:underline"
             >
               Solve →
             </button>

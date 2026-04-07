@@ -4,6 +4,7 @@ import Submission from "../models/Submission.model.js";
 
 
 
+
 export const getAllProblems = async (req, res) => {
     try {
         const problem = await Problem.find();
@@ -119,3 +120,4 @@ export const getContest = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch contest" });
   }
 };
+
