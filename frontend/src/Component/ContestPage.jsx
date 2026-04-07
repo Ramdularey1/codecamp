@@ -42,8 +42,7 @@ const ContestPage = () => {
           }
         };
 
-        updateTimer(); // run once immediately
-
+        updateTimer();
         interval = setInterval(updateTimer, 1000);
       } catch (err) {
         console.log("Error fetching contest:", err);
@@ -81,8 +80,19 @@ const ContestPage = () => {
 
   return (
     <div className="p-6 bg-gray-900 min-h-screen text-white">
+      
       {/* 🔥 Title */}
-      <h1 className="text-2xl font-bold mb-4">{contest.title}</h1>
+      <h1 className="text-2xl font-bold mb-2">{contest.title}</h1>
+
+      {/* 🔥 Start Time (IST) */}
+      <p className="mb-2 text-gray-300">
+        Starts At:{" "}
+        <span className="font-semibold">
+          {new Date(contest.startTime).toLocaleString("en-IN", {
+            timeZone: "Asia/Kolkata",
+          })}
+        </span>
+      </p>
 
       {/* 🔥 Status */}
       <p className="mb-2">
@@ -120,7 +130,7 @@ const ContestPage = () => {
       {/* 🔥 Messages */}
       {status === "not_started" && (
         <p className="text-yellow-400 mb-4">
-          Contest has not started yet
+          Contest will start at scheduled time
         </p>
       )}
 
