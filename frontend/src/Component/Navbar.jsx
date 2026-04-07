@@ -45,6 +45,8 @@ const Navbar = () => {
   };
   fetchContest();
 }, []);
+ 
+console.log(contestId);
 
   useEffect(() => {
     if (isOpen || isLogoutVisible) {
