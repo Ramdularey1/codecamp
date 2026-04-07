@@ -8,7 +8,7 @@ const ContestPage = () => {
 
   const { id } = useParams(); // ✅ dynamic contest id
   const navigate = useNavigate();
-
+  console.log("Contest ID:", id);
   useEffect(() => {
     let interval;
 
