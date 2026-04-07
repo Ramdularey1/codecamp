@@ -105,7 +105,7 @@ const Navbar = () => {
             <Link to="/submissions">Submissions</Link>
             <Link to="/compilar">Compilar</Link>
             <Link
-              to="/contest/69d4c20b528bd7ae9359a6ef"
+              to="/contest/69d4d64f59e37111f898a096"
               className="py-2"
               onClick={toggleMenu}
             >
