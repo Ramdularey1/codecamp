@@ -6,9 +6,9 @@ const ContestPage = () => {
   const [contest, setContest] = useState(null);
   const [timeLeft, setTimeLeft] = useState(0);
 
-  const { id } = useParams(); // ✅ dynamic contest id
+  const { id } = useParams();
   const navigate = useNavigate();
-console.log("Contest ID from URL:", id); // ✅ debug log
+
   useEffect(() => {
     let interval;
 
@@ -18,23 +18,33 @@ console.log("Contest ID from URL:", id); // ✅ debug log
           `https://codecamp-iffd.onrender.com/api/v1/users/contest/${id}`
         );
 
-        const contestData = res.data.data;
+        const contestData = res.data?.data;
+        if (!contestData) return;
+
         setContest(contestData);
 
+        const start = new Date(contestData.startTime).getTime();
         const end = new Date(contestData.endTime).getTime();
 
-        // ⏱ Timer
-        interval = setInterval(() => {
+        const updateTimer = () => {
           const now = new Date().getTime();
-          const diff = end - now;
 
-          if (diff <= 0) {
-            clearInterval(interval);
-            setTimeLeft(0);
+          if (now < start) {
+            // before start → countdown to start
+            setTimeLeft(start - now);
+          } else if (now >= start && now <= end) {
+            // running → countdown to end
+            setTimeLeft(end - now);
           } else {
-            setTimeLeft(diff);
+            // ended
+            setTimeLeft(0);
+            clearInterval(interval);
           }
-        }, 1000);
+        };
+
+        updateTimer(); // run once immediately
+
+        interval = setInterval(updateTimer, 1000);
       } catch (err) {
         console.log("Error fetching contest:", err);
       }
@@ -42,11 +52,13 @@ console.log("Contest ID from URL:", id); // ✅ debug log
 
     if (id) fetchContest();
 
-    return () => clearInterval(interval); // ✅ cleanup
+    return () => clearInterval(interval);
   }, [id]);
 
   // ⏱ format time
   const formatTime = (ms) => {
+    if (ms <= 0) return "0h 0m 0s";
+
     const totalSec = Math.floor(ms / 1000);
     const h = Math.floor(totalSec / 3600);
     const m = Math.floor((totalSec % 3600) / 60);
@@ -58,25 +70,69 @@ console.log("Contest ID from URL:", id); // ✅ debug log
   if (!contest)
     return <p className="text-white p-6">Loading contest...</p>;
 
+  const now = new Date().getTime();
+  const start = new Date(contest.startTime).getTime();
+  const end = new Date(contest.endTime).getTime();
+
+  let status = "";
+  if (now < start) status = "not_started";
+  else if (now >= start && now <= end) status = "running";
+  else status = "ended";
+
   return (
     <div className="p-6 bg-gray-900 min-h-screen text-white">
-      
-      {/* 🔥 Header */}
-      <h1 className="text-2xl font-bold mb-4">
-        {contest.title}
-      </h1>
+      {/* 🔥 Title */}
+      <h1 className="text-2xl font-bold mb-4">{contest.title}</h1>
+
+      {/* 🔥 Status */}
+      <p className="mb-2">
+        Status:{" "}
+        <span
+          className={
+            status === "running"
+              ? "text-green-400"
+              : status === "not_started"
+              ? "text-yellow-400"
+              : "text-red-400"
+          }
+        >
+          {status === "running"
+            ? "Running"
+            : status === "not_started"
+            ? "Not Started"
+            : "Ended"}
+        </span>
+      </p>
 
       {/* 🔥 Timer */}
       <div className="mb-6 text-lg">
-        ⏱ Time Left:{" "}
+        ⏱{" "}
+        {status === "not_started"
+          ? "Starts In:"
+          : status === "running"
+          ? "Time Left:"
+          : "Contest Ended"}{" "}
         <span className="text-red-400 font-bold">
           {formatTime(timeLeft)}
         </span>
       </div>
 
+      {/* 🔥 Messages */}
+      {status === "not_started" && (
+        <p className="text-yellow-400 mb-4">
+          Contest has not started yet
+        </p>
+      )}
+
+      {status === "ended" && (
+        <p className="text-red-400 mb-4">
+          Contest has ended
+        </p>
+      )}
+
       {/* 🔥 Problems */}
       <div className="space-y-4">
-        {contest.problems.map((p, index) => (
+        {contest.problems?.map((p, index) => (
           <div
             key={p._id}
             className="bg-gray-800 p-4 rounded border border-gray-700 flex justify-between items-center hover:bg-gray-700 transition"
@@ -91,10 +147,15 @@ console.log("Contest ID from URL:", id); // ✅ debug log
             </div>
 
             <button
-              onClick={() => navigate(`/code/${p._id}`)} // ✅ SPA navigation
-              className="text-blue-400 hover:underline"
+              disabled={status !== "running"}
+              onClick={() => navigate(`/code/${p._id}`)}
+              className={`text-blue-400 ${
+                status !== "running"
+                  ? "opacity-50 cursor-not-allowed"
+                  : "hover:underline"
+              }`}
             >
-              Solve →
+              {status === "ended" ? "Closed" : "Solve →"}
             </button>
           </div>
         ))}
