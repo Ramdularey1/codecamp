@@ -19,6 +19,7 @@ import SubmissionDetails from "./Component/SubmissionDetails";
 import Leaderboard from "./Component/Leaderboard";
 import Dashboard from "./Component/Dashboard";
 import ContestPage from "./Component/ContestPage";
+import ContestLeaderboard from "./Component/ContestLeaderboard";
 
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
             <Route path="/leaderboard" element={<Leaderboard />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/contest/:id" element={<ContestPage />} />
+            <Route path="/contest/:id/leaderboard" element={<ContestLeaderboard />} />
           </Routes>
           <Routes>
           <Route path="/login" element={<Login />} />

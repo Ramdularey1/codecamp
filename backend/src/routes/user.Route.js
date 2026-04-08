@@ -8,6 +8,7 @@ import { getLeaderboard } from "../controllers/problem.controller.js";
 import { getUserStats } from "../controllers/problem.controller.js";
 import { getContest } from "../controllers/problem.controller.js";
 import { createContest } from "../controllers/submission.controller.js";
+import { getContestLeaderboard } from "../controllers/submission.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 const router = Router();
 
@@ -29,6 +30,7 @@ router.get("/leaderboard", getLeaderboard);
 router.get("/stats/:userId", getUserStats);
 router.get("/contest/:id", getContest);
 router.post("/contest", createContest);
+router.get("/contest-leaderboard/:id", getContestLeaderboard);
 
 
 export default router
