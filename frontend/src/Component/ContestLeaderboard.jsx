@@ -5,7 +5,8 @@ import { useParams } from "react-router-dom";
 const ContestLeaderboard = () => {
   const [data, setData] = useState([]);
   const { id } = useParams();
-
+ console.log("Contest ID:", id); // ✅ Debugging line
+//  const contestId = "69d60fe16d266cc86f1de2c5";
   useEffect(() => {
     const fetchLeaderboard = async () => {
       try {

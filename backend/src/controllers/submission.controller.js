@@ -2,7 +2,7 @@ import User from "../models/User.model.js";
 import Submission from "../models/Submission.model.js";
 import Problem from "../models/Problem.model.js";
 import Contest from "../models/Contest.model.js";
-
+import mongoose from "mongoose";
 import axios from "axios";
 import { ApiError } from "../utils/ApiError.js";
 

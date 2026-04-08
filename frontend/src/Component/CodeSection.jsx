@@ -9,7 +9,7 @@ import axios from "axios";
 const CodeSections = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
-
+  
   const problems = useSelector((state) => state.allproblems.allProblems);
   const currentProblem = useSelector(
     (state) => state.currentProblem.currentProblem,
@@ -58,7 +58,7 @@ if __name__ == "__main__":
   const user = JSON.parse(localStorage.getItem("user"));
 
   const userId = user.data._id;
-
+  
   const handleSubmit = async () => {
     try {
       const testCaseInputs = currentProblem.testCases.map(
