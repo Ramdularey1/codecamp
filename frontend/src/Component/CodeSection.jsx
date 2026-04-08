@@ -72,7 +72,7 @@ if __name__ == "__main__":
           source_code: sourceCode,
           language_id: languageId,
           stdin: testCaseInputs,
-          contestId: contestId, // Pass contest ID if needed 
+          contest: contestId, // Pass contest ID if needed 
         },
       );
 
