@@ -109,6 +109,7 @@ const Navbar = () => {
 
             {/* ✅ Contest Link */}
             <Link to={`/contest/${contestId}`}>Contest</Link>
+            <Link to={`/contest/${id}/leaderboard`}>Contest</Link>
 
             <button onClick={handleAccount}>Account</button>
 
