@@ -58,7 +58,7 @@ if __name__ == "__main__":
   const user = JSON.parse(localStorage.getItem("user"));
 
   const userId = user.data._id;
-  const contestId = "69d6261c9d323c040bdfa65d";
+  const contestId = "69d768724623924b9ff7feda";
   const handleSubmit = async () => {
     try {
       const testCaseInputs = currentProblem.testCases.map(
@@ -72,7 +72,7 @@ if __name__ == "__main__":
           source_code: sourceCode,
           language_id: languageId,
           stdin: testCaseInputs,
-          contest: contestId, // Pass contest ID if needed 
+          contestId: contestId, // Pass contest ID if needed 
         },
       );
 
