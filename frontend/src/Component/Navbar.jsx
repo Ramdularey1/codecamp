@@ -15,7 +15,7 @@ const Navbar = () => {
   const buttonRef = useRef(null);
 
   // ✅ Contest ID (CHANGE THIS WHEN NEEDED)
-  const contestId = "69d76a8d0ca41f9298885cb7";
+  const contestId = "69d77c464560d0d905b84269";
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
