@@ -58,7 +58,7 @@ if __name__ == "__main__":
   const user = JSON.parse(localStorage.getItem("user"));
 
   const userId = user.data._id;
-  const contestId = "69d768724623924b9ff7feda";
+  const contestId = "69d769df0ca41f9298885cb5";
   const handleSubmit = async () => {
     try {
       const testCaseInputs = currentProblem.testCases.map(
