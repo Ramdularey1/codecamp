@@ -66,7 +66,7 @@ dotenv.config({
 app.use(
   cors({
     origin: "https://codecamp-neon.vercel.app",
-    origin:  "https://codecamp-ayqz432q5-ram-dulareys-projects.vercel.app",
+    // origin:  "https://codecamp-ayqz432q5-ram-dulareys-projects.vercel.app",
     credentials: true,
   })
 );
@@ -87,7 +87,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: "https://codecamp-neon.vercel.app",
-     origin:  "https://codecamp-ayqz432q5-ram-dulareys-projects.vercel.app",
+    //  origin:  "https://codecamp-ayqz432q5-ram-dulareys-projects.vercel.app",
     methods: ["GET", "POST"],
   },
 });
