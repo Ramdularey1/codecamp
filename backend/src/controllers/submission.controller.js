@@ -263,11 +263,25 @@ export const submitCode = async (req, res) => {
     await submission.save();
 
     // 🔥 RESPONSE
-    res.json({
-      data: testCaseResults,
-      status,
-      score,
-    });
+    // res.json({
+    //   data: testCaseResults,
+    //   status,
+    //   score,
+    // });
+
+    // 🔥 REAL-TIME EVENT
+if (contestId) {
+  global.io.emit("leaderboardUpdated", {
+    contestId,
+  });
+}
+
+// RESPONSE
+res.json({
+  data: testCaseResults,
+  status,
+  score,
+});
 
   } catch (error) {
     console.error(error);
