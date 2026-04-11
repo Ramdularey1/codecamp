@@ -31,8 +31,6 @@ router.get("/stats/:userId", getUserStats);
 router.get("/contest/:id", getContest);
 router.post("/contest", createContest);
 router.get("/contest-leaderboard/:id", getContestLeaderboard);
-
-
 export default router
     
 

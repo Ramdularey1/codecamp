@@ -6,185 +6,11 @@ import mongoose from "mongoose";
 import axios from "axios";
 import { ApiError } from "../utils/ApiError.js";
 
-// export const submitCode = async (req, res) => {
-//   const { userId, problemId, source_code, language_id } = req.body;
-
-//   try {
-//     // Find the problem to get the test cases
-//     const problem = await Problem.findById(problemId);
-//     if (!problem) {
-//       return res.status(404).json({ error: "Problem not found" });
-//     }
-
-//     // Iterate over each test case and send the code to Judge0
-//     const testCaseResults = [];
-//     for (let testCase of problem.testCases) {
-//       const response = await axios.post(
-//         "https://judge0-extra-ce.p.rapidapi.com/submissions",
-//         {
-//           source_code,
-//           language_id,
-//           stdin: testCase.input,
-//         },
-//         {
-//           headers: {
-//             "x-rapidapi-key":
-//               "e1bf0af75amshab68da3c814f646p1daf8ejsn1b95b7e99d3c",
-//             "x-rapidapi-host": "judge0-extra-ce.p.rapidapi.com",
-//             "Content-Type": "application/json",
-//           },
-//           params: {
-//             base64_encoded: "false",
-//             wait: "true",
-//           },
-//         },
-//       );
-
-//       if (response.status !== 200) {
-//         throw new Error(`Submission failed with status ${response.status}`);
-//       }
-
-//       const { stdout, stderr, compile_output } = response.data;
-
-//       // Compare outputs against expected results
-//       const expectedOutput = testCase.output.trim();
-//       const actualOutput = stdout
-//         ? stdout.trim()
-//         : (stderr || compile_output || "").trim();
-//       const passed = actualOutput === expectedOutput;
-
-//       testCaseResults.push({
-//         input: testCase.input,
-//         expectedOutput,
-//         actualOutput,
-//         passed,
-//       });
-//     }
-
-//     // Save submission details
-//     const submission = new Submission({
-//       user: userId,
-//       problem: problemId,
-//       source_code,
-//       language_id,
-//       result: {
-//         status: "completed",
-//         testCaseResults, // Store the detailed test case results
-//       },
-//     });
-
-//     await submission.save();
-//     res.json({ data: testCaseResults });
-//   } catch (error) {
-//     console.error(error);
-//     res
-//       .status(500)
-//       .json({ error: "Something went wrong while sending code to judge!" });
-//   }
-// };
-
-
-// export const submitCode = async (req, res) => {
-//   const { userId, problemId, source_code, language_id } = req.body;
-
-//   try {
-//     // 🔥 Get problem
-//     const problem = await Problem.findById(problemId);
-//     if (!problem) {
-//       return res.status(404).json({ error: "Problem not found" });
-//     }
-
-//     const testCaseResults = [];
-
-//     // 🔥 Run all test cases
-//     for (let testCase of problem.testCases) {
-//       const response = await axios.post(
-//         "https://judge0-extra-ce.p.rapidapi.com/submissions",
-//         {
-//           source_code,
-//           language_id,
-//           stdin: testCase.input,
-//         },
-//         {
-//           headers: {
-//             "x-rapidapi-key":
-//               "e1bf0af75amshab68da3c814f646p1daf8ejsn1b95b7e99d3c",
-//             "x-rapidapi-host": "judge0-extra-ce.p.rapidapi.com",
-//             "Content-Type": "application/json",
-//           },
-//           params: {
-//             base64_encoded: "false",
-//             wait: "true",
-//           },
-//         }
-//       );
-
-//       if (response.status !== 200) {
-//         throw new Error(`Submission failed with status ${response.status}`);
-//       }
-
-//       const { stdout, stderr, compile_output } = response.data;
-
-//       // 🔥 Normalize output (IMPORTANT FIX)
-//       const expectedOutput = testCase.output.trim();
-//       const actualOutput = stdout
-//         ? stdout.trim()
-//         : (stderr || compile_output || "").trim();
-
-//       const passed = actualOutput === expectedOutput;
-
-//       testCaseResults.push({
-//         input: testCase.input,
-//         expectedOutput,
-//         actualOutput,
-//         passed,
-//       });
-//     }
-
-//     // 🔥 CALCULATE RESULT
-//     const totalPassed = testCaseResults.filter((t) => t.passed).length;
-//     const total = testCaseResults.length;
-
-//     const status =
-//       totalPassed === total ? "Accepted" : "Wrong Answer";
-
-//     const score = status === "Accepted" ? 100 : 0;
-
-//     // 🔥 SAVE SUBMISSION
-//     const submission = new Submission({
-//       user: userId,
-//       problem: problemId,
-//       source_code,
-//       language_id,
-//       result: {
-//         status,
-//         testCaseResults,
-//       },
-//       score, // ✅ NEW FIELD (important for leaderboard)
-//     });
-
-//     await submission.save();
-
-//     // 🔥 RESPONSE
-//     res.json({
-//       data: testCaseResults,
-//       status,
-//       score,
-//     });
-
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({
-//       error: "Something went wrong while sending code to judge!",
-//     });
-//   }
-// };
-
 export const submitCode = async (req, res) => {
   const { userId, problemId, source_code, language_id, contestId } = req.body;
 
   try {
-    // 🔥 Get problem
+   
     const problem = await Problem.findById(problemId);
     if (!problem) {
       return res.status(404).json({ error: "Problem not found" });
@@ -192,7 +18,7 @@ export const submitCode = async (req, res) => {
 
     const testCaseResults = [];
 
-    // 🔥 Run all test cases
+    
     for (let testCase of problem.testCases) {
       const response = await axios.post(
         "https://judge0-extra-ce.p.rapidapi.com/submissions",
@@ -236,7 +62,7 @@ export const submitCode = async (req, res) => {
       });
     }
 
-    // 🔥 CALCULATE RESULT
+
     const totalPassed = testCaseResults.filter((t) => t.passed).length;
     const total = testCaseResults.length;
 
@@ -245,14 +71,14 @@ export const submitCode = async (req, res) => {
 
     const score = status === "Accepted" ? 100 : 0;
 
-    // 🔥 CHECK EXISTING SUBMISSION (IMPORTANT)
+    
     const existingSubmission = await Submission.findOne({
       user: userId,
       problem: problemId,
       contest: contestId || null,
     });
 
-    // 🔥 IF EXISTS → UPDATE ONLY IF BETTER
+    
     if (existingSubmission) {
       if (score > existingSubmission.score) {
         existingSubmission.score = score;
@@ -265,7 +91,7 @@ export const submitCode = async (req, res) => {
         await existingSubmission.save();
       }
 
-      // 🔥 REAL-TIME UPDATE
+      
       if (contestId) {
         global.io.emit("leaderboardUpdated", { contestId });
       }
@@ -277,7 +103,7 @@ export const submitCode = async (req, res) => {
       });
     }
 
-    // 🔥 ELSE CREATE NEW SUBMISSION
+    
     const submission = new Submission({
       user: userId,
       problem: problemId,
@@ -293,12 +119,12 @@ export const submitCode = async (req, res) => {
 
     await submission.save();
 
-    // 🔥 REAL-TIME UPDATE
+    
     if (contestId) {
       global.io.emit("leaderboardUpdated", { contestId });
     }
 
-    // 🔥 RESPONSE
+   
     res.json({
       data: testCaseResults,
       status,
@@ -334,13 +160,14 @@ export const getSubmissionsByUser = async (req, res) => {
     console.error("Error fetching submissions:", error);
   }
 };
+
 export const createContest = async (req, res) => {
   try {
     const { title, problems, startTime, endTime } = req.body;
 
     const contest = new Contest({
       title,
-      problems, // array of problem IDs
+      problems, 
       startTime,
       endTime,
     });
@@ -356,7 +183,7 @@ export const createContest = async (req, res) => {
 
 export const getContestLeaderboard = async (req, res) => {
   try {
-    const { id } = req.params; // contestId
+    const { id } = req.params; 
 
     const leaderboard = await Submission.aggregate([
       {

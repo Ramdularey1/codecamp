@@ -1,89 +1,54 @@
-import Problem from "../models/Problem.model.js"
+import Problem from "../models/Problem.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import Submission from "../models/Submission.model.js";
 import Contest from "../models/Contest.model.js";
 
-
-
-
-
 export const getAllProblems = async (req, res) => {
-    try {
-        const problem = await Problem.find();
-        if(!problem){
-             throw new ApiError(501, "fail to fetch problem from data base");
-        }
-        return res.status(200).json({data:problem, message: "get the problem succefully"})
-    } catch (error) {
-        console.log("Error accure while fething the problem", error)
+  try {
+    const problem = await Problem.find();
+    if (!problem) {
+      throw new ApiError(501, "fail to fetch problem from data base");
     }
-}
+    return res
+      .status(200)
+      .json({ data: problem, message: "get the problem succefully" });
+  } catch (error) {
+    console.log("Error accure while fething the problem", error);
+  }
+};
 
 export const addProblem = async (req, res) => {
-    const { title, description, difficulty, testCases } = req.body;
+  const { title, description, difficulty, testCases } = req.body;
 
-    const problem = new Problem({
-        title,
-        description,
-        difficulty,
-        testCases,
-    });
+  const problem = new Problem({
+    title,
+    description,
+    difficulty,
+    testCases,
+  });
 
-    try {
-        await problem.save();
-        res.status(201).json({data:problem, message: "problem added succefully"});
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Failed to add problem' });
-    }
-}
+  try {
+    await problem.save();
+    res
+      .status(201)
+      .json({ data: problem, message: "problem added succefully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Failed to add problem" });
+  }
+};
 
 export const getproblemById = async (req, res) => {
-     try {
-   const submission = await Submission.findById(req.params.id)
+  try {
+    const submission = await Submission.findById(req.params.id)
       .populate("problem")
       .populate("user");
 
-   res.json({ data: submission });
-   } catch (err) {
-   res.status(500).json({ error: "Failed to fetch submission" });
+    res.json({ data: submission });
+  } catch (err) {
+    res.status(500).json({ error: "Failed to fetch submission" });
   }
-}
-
-// export const getLeaderboard = async (req, res) => {
-//   try {
-//     const leaderboard = await Submission.aggregate([
-//       {
-//         $match: {
-//           "result.status": "Accepted",
-//         },
-//       },
-//       {
-//         $group: {
-//           _id: "$user",
-//           solved: { $sum: 1 },
-//         },
-//       },
-//       {
-//         $sort: { solved: -1 },
-//       },
-//       {
-//         $limit: 10,
-//       },
-//     ]);
-
-//     // populate user details
-//     const populated = await Submission.populate(leaderboard, {
-//       path: "_id",
-//       select: "name email",
-//     });
-
-//     res.json({ data: populated });
-//   } catch (err) {
-//     console.error(err);
-//     res.status(500).json({ error: "Failed to fetch leaderboard" });
-//   }
-// };
+};
 
 export const getUserStats = async (req, res) => {
   try {
@@ -94,7 +59,7 @@ export const getUserStats = async (req, res) => {
     const total = submissions.length;
 
     const accepted = submissions.filter(
-      (s) => s.result?.status === "Accepted"
+      (s) => s.result?.status === "Accepted",
     ).length;
 
     const wrong = total - accepted;
@@ -122,17 +87,16 @@ export const getContest = async (req, res) => {
 
     const contest = await Contest.findById(id).populate("problems");
 
-    console.log("Contest Data:", contest); // ✅ debug
+    console.log("Contest Data:", contest); 
 
     if (!contest) {
       return res.status(404).json({ error: "Contest not found" });
     }
 
     res.json({ data: contest });
-
   } catch (err) {
-    console.error("🔥 REAL ERROR:", err); // ✅ THIS WILL SHOW REAL ISSUE
-    res.status(500).json({ error: err.message }); // show real error
+    console.error("REAL ERROR:", err); 
+    res.status(500).json({ error: err.message }); 
   }
 };
 
@@ -166,4 +130,3 @@ export const getLeaderboard = async (req, res) => {
     res.status(500).json({ error: "Failed to fetch leaderboard" });
   }
 };
-
