@@ -221,7 +221,6 @@ export const submitCode = async (req, res) => {
 
       const { stdout, stderr, compile_output } = response.data;
 
-      // 🔥 Normalize output
       const expectedOutput = testCase.output.trim();
       const actualOutput = stdout
         ? stdout.trim()
@@ -246,11 +245,43 @@ export const submitCode = async (req, res) => {
 
     const score = status === "Accepted" ? 100 : 0;
 
-    // 🔥 SAVE SUBMISSION (UPDATED)
+    // 🔥 CHECK EXISTING SUBMISSION (IMPORTANT)
+    const existingSubmission = await Submission.findOne({
+      user: userId,
+      problem: problemId,
+      contest: contestId || null,
+    });
+
+    // 🔥 IF EXISTS → UPDATE ONLY IF BETTER
+    if (existingSubmission) {
+      if (score > existingSubmission.score) {
+        existingSubmission.score = score;
+        existingSubmission.source_code = source_code;
+        existingSubmission.result = {
+          status,
+          testCaseResults,
+        };
+
+        await existingSubmission.save();
+      }
+
+      // 🔥 REAL-TIME UPDATE
+      if (contestId) {
+        global.io.emit("leaderboardUpdated", { contestId });
+      }
+
+      return res.json({
+        data: testCaseResults,
+        status,
+        score,
+      });
+    }
+
+    // 🔥 ELSE CREATE NEW SUBMISSION
     const submission = new Submission({
       user: userId,
       problem: problemId,
-      contest: contestId || null, // ✅ important (handles normal + contest)
+      contest: contestId || null,
       source_code,
       language_id,
       result: {
@@ -262,26 +293,17 @@ export const submitCode = async (req, res) => {
 
     await submission.save();
 
+    // 🔥 REAL-TIME UPDATE
+    if (contestId) {
+      global.io.emit("leaderboardUpdated", { contestId });
+    }
+
     // 🔥 RESPONSE
-    // res.json({
-    //   data: testCaseResults,
-    //   status,
-    //   score,
-    // });
-
-    // 🔥 REAL-TIME EVENT
-if (contestId) {
-  global.io.emit("leaderboardUpdated", {
-    contestId,
-  });
-}
-
-// RESPONSE
-res.json({
-  data: testCaseResults,
-  status,
-  score,
-});
+    res.json({
+      data: testCaseResults,
+      status,
+      score,
+    });
 
   } catch (error) {
     console.error(error);
