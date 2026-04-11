@@ -93,7 +93,7 @@ if __name__ == "__main__":
             <option value="4">Java</option>
             <option value="2">C++</option>
             <option value="28">Python</option>
-            {/* Add more languages as needed */}
+            
           </select>
         </div>
         <div className="flex-1 pt-4 relative">
@@ -129,7 +129,7 @@ if __name__ == "__main__":
 
         {submissionResult && (
           <div className="relative p-4 rounded-lg bg-gray-800 text-white font-mono text-sm h-full overflow-auto border border-gray-700">
-            {/* 🔥 Clear Button (Top Right) */}
+            
             <button
               className="absolute top-3 right-3 text-red-400 border border-red-600 hover:bg-red-600 hover:text-white rounded px-3 py-1 text-sm"
               onClick={handleClearResult}
@@ -137,7 +137,7 @@ if __name__ == "__main__":
               Clear
             </button>
 
-            {/* 🔥 Status */}
+           
             <h2 className="text-lg font-bold mb-4">
               Status:{" "}
               <span
@@ -151,7 +151,7 @@ if __name__ == "__main__":
               </span>
             </h2>
 
-            {/* 🔥 Output Section */}
+            
             <div className="space-y-2">
               <p>
                 <span className="font-semibold text-green-400">Output:</span>{" "}

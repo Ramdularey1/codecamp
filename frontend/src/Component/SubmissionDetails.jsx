@@ -33,7 +33,7 @@ const SubmissionDetails = () => {
   return (
     <div className="p-6 bg-gray-900 min-h-screen text-white">
       
-      {/* 🔥 HEADER */}
+    
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">
           {submission.problem?.title || "Unknown Problem"}
@@ -47,7 +47,7 @@ const SubmissionDetails = () => {
         </button>
       </div>
 
-      {/* 🔥 STATUS + SUMMARY */}
+     
       <div className="mb-4">
         <p>
           Status:{" "}
@@ -69,7 +69,7 @@ const SubmissionDetails = () => {
         )}
       </div>
 
-      {/* 🔥 CODE BLOCK */}
+      
       <div className="bg-black p-4 rounded mb-6 border border-gray-700 overflow-auto">
         <h2 className="font-bold mb-2">Submitted Code:</h2>
         <pre className="text-green-400 whitespace-pre-wrap text-sm">
@@ -77,7 +77,7 @@ const SubmissionDetails = () => {
         </pre>
       </div>
 
-      {/* 🔥 TEST CASE RESULTS */}
+      
       {testCases.length > 0 && (
         <div>
           <h2 className="font-bold mb-3">Test Case Results:</h2>

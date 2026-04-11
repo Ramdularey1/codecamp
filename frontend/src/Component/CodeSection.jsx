@@ -16,8 +16,8 @@ const CodeSections = () => {
   );
 
   const [sourceCode, setSourceCode] = useState("");
-  const [languageId, setLanguageId] = useState(4); // Default language ID for Java
-  const [stdin, setStdin] = useState(""); // For any input the code needs
+  const [languageId, setLanguageId] = useState(4); 
+  const [stdin, setStdin] = useState("");
   const [submissionResult, setSubmissionResult] = useState(null);
 
   const boilerplateCode = {
@@ -72,7 +72,7 @@ if __name__ == "__main__":
           source_code: sourceCode,
           language_id: languageId,
           stdin: testCaseInputs,
-          contestId: contestId, // Pass contest ID if needed 
+          contestId: contestId, 
         },
       );
 
@@ -194,7 +194,7 @@ if __name__ == "__main__":
 
       {submissionResult && (
         <div className="absolute md:top-[180px] md:left-[20px] bg-gray-700 text-white p-6 md:rounded-lg w-full md:w-[47%]">
-          {/* 🔥 Overall Status */}
+          
           {(() => {
             const total = submissionResult.length;
             const passedCount = submissionResult.filter((t) => t.passed).length;
@@ -220,7 +220,7 @@ if __name__ == "__main__":
 
           <h2 className="text-lg font-bold mt-4">Submission Details:</h2>
 
-          {/* 🔥 Test Case Details */}
+        
           {submissionResult.map((result, index) => (
             <div
               key={index}
@@ -251,7 +251,7 @@ if __name__ == "__main__":
             </div>
           ))}
 
-          {/* 🔥 Clear Button */}
+          
           <button
             className="mt-4 text-red-400 border border-red-600 hover:bg-red-600 hover:text-white rounded px-3 py-1"
             onClick={handleClearResult}

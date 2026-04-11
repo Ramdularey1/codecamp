@@ -30,13 +30,13 @@ const ContestPage = () => {
           const now = new Date().getTime();
 
           if (now < start) {
-            // before start → countdown to start
+            
             setTimeLeft(start - now);
           } else if (now >= start && now <= end) {
-            // running → countdown to end
+            
             setTimeLeft(end - now);
           } else {
-            // ended
+           
             setTimeLeft(0);
             clearInterval(interval);
           }
@@ -54,7 +54,7 @@ const ContestPage = () => {
     return () => clearInterval(interval);
   }, [id]);
 
-  // ⏱ format time
+
   const formatTime = (ms) => {
     if (ms <= 0) return "0h 0m 0s";
 
@@ -81,10 +81,10 @@ const ContestPage = () => {
   return (
     <div className="p-6 bg-gray-900 min-h-screen text-white">
       
-      {/* 🔥 Title */}
+      
       <h1 className="text-2xl font-bold mb-2">{contest.title}</h1>
 
-      {/* 🔥 Start Time (IST) */}
+      
       <p className="mb-2 text-gray-300">
         Starts At:{" "}
         <span className="font-semibold">
@@ -94,7 +94,7 @@ const ContestPage = () => {
         </span>
       </p>
 
-      {/* 🔥 Status */}
+      
       <p className="mb-2">
         Status:{" "}
         <span
@@ -114,7 +114,7 @@ const ContestPage = () => {
         </span>
       </p>
 
-      {/* 🔥 Timer */}
+    
       <div className="mb-6 text-lg">
         ⏱{" "}
         {status === "not_started"
@@ -127,7 +127,7 @@ const ContestPage = () => {
         </span>
       </div>
 
-      {/* 🔥 Messages */}
+    
       {status === "not_started" && (
         <p className="text-yellow-400 mb-4">
           Contest will start at scheduled time
@@ -140,7 +140,7 @@ const ContestPage = () => {
         </p>
       )}
 
-      {/* 🔥 Problems */}
+      
       <div className="space-y-4">
         {contest.problems?.map((p, index) => (
           <div

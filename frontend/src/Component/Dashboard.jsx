@@ -41,7 +41,7 @@ const Dashboard = () => {
     );
   }
 
-  // 🔥 Graph Data
+
   const chartData = stats.recent.map((sub, index) => ({
     name: `#${index + 1}`,
     success: sub.result?.status === "Accepted" ? 1 : 0,
@@ -51,7 +51,7 @@ const Dashboard = () => {
     <div className="p-6 bg-gray-900 min-h-screen text-white">
       <h1 className="text-2xl font-bold mb-6">📊 Dashboard</h1>
 
-      {/* 🔥 Stats Cards */}
+     
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div className="bg-gray-800 p-4 rounded text-center">
           <p className="text-gray-400">Total</p>
@@ -80,7 +80,7 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* 🔥 Submission Graph */}
+     
       <div className="bg-gray-800 p-4 rounded mb-6 border border-gray-700">
         <h2 className="font-bold mb-4">📈 Submission Trend</h2>
 
@@ -95,7 +95,7 @@ const Dashboard = () => {
         </ResponsiveContainer>
       </div>
 
-      {/* 🔥 Recent Activity */}
+      
       <div>
         <h2 className="text-lg font-bold mb-4">Recent Activity</h2>
 
