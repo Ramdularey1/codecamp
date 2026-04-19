@@ -128,7 +128,8 @@ const Navbar = () => {
                 />
 
                 <h1>{user?.data?.username}</h1>
-
+                <Link to = "/dashboard">Dashboard</Link>
+                <Link to = "/leaderboard">Leaderboard</Link>
                 {user ? (
                   <h1 className="cursor-pointer" onClick={handleLogoutToggle}>
                     Logout
@@ -138,7 +139,7 @@ const Navbar = () => {
                     Login
                   </h1>
                 )}
-                <Link to = "/dashboard">Dashboard</Link>
+                
               </div>
             </div>
           </div>
