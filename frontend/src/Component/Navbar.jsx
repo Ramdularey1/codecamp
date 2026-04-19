@@ -138,6 +138,7 @@ const Navbar = () => {
                     Login
                   </h1>
                 )}
+                <Link to = "/dashboard">Dashboard</Link>
               </div>
             </div>
           </div>
