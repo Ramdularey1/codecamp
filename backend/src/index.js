@@ -16,7 +16,10 @@ dotenv.config({
 
 app.use(
   cors({
-    origin: "https://codecamp-neon.vercel.app",
+    origin: [
+      "https://codecamp-neon.vercel.app",
+      "https://codecamp-64vn89cdr-ram-dulareys-projects.vercel.app"
+    ],
     credentials: true,
   })
 );
