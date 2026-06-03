@@ -18,7 +18,9 @@ app.use(
   cors({
     origin: [
       "https://codecamp-neon.vercel.app",
-      "https://codecamp-64vn89cdr-ram-dulareys-projects.vercel.app"
+      "https://codecamp-64vn89cdr-ram-dulareys-projects.vercel.app",
+      "https://codecamp-o2mloqtvu-ram-dulareys-projects.vercel.app",
+      "http://localhost:5173",
     ],
     credentials: true,
   })
