@@ -5,18 +5,32 @@ import Navbar from "./Navbar";
 const ADMIN_EMAIL = "testadmin@gmail.com";
 const ADMIN_PASSWORD = "123456";
 const LOCAL_CONTESTS_KEY = "codecamp-created-contests";
+const INDIA_TIME_ZONE = "Asia/Kolkata";
+const INDIA_TIME_ZONE_OFFSET = "+05:30";
 
-const padTimePart = (value) => String(value).padStart(2, "0");
-const getTodayDate = () => {
-  const date = new Date();
-  return [
-    date.getFullYear(),
-    padTimePart(date.getMonth() + 1),
-    padTimePart(date.getDate()),
-  ].join("-");
+const getIndiaDateParts = (date) => {
+  const formatter = new Intl.DateTimeFormat("en-CA", {
+    timeZone: INDIA_TIME_ZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  });
+
+  return Object.fromEntries(
+    formatter.formatToParts(date).map((part) => [part.type, part.value]),
+  );
 };
-const getTimeValue = (date) =>
-  `${padTimePart(date.getHours())}:${padTimePart(date.getMinutes())}`;
+const getTodayDate = () => {
+  const parts = getIndiaDateParts(new Date());
+  return `${parts.year}-${parts.month}-${parts.day}`;
+};
+const getTimeValue = (date) => {
+  const parts = getIndiaDateParts(date);
+  return `${parts.hour}:${parts.minute}`;
+};
 const getDefaultContestTimes = () => {
   const start = new Date();
   const end = new Date(start.getTime() + 60 * 60 * 1000);
@@ -27,7 +41,7 @@ const getDefaultContestTimes = () => {
     endTime: getTimeValue(end),
   };
 };
-const buildDateTime = (date, time) => `${date}T${time}`;
+const buildDateTime = (date, time) => `${date}T${time}:00${INDIA_TIME_ZONE_OFFSET}`;
 
 const AdminContest = () => {
   const loginUser = localStorage.getItem("user");
@@ -173,7 +187,7 @@ const AdminContest = () => {
       }
       setMessage(
         contestId
-          ? `Contest created successfully for ${formData.contestDate}, ${formData.startTime} to ${formData.endTime}. It is now visible on the Contests page. Contest ID: ${contestId}`
+          ? `Contest created successfully for ${formData.contestDate}, ${formData.startTime} to ${formData.endTime} India time. It is now visible on the Contests page. Contest ID: ${contestId}`
           : "Contest created successfully.",
       );
       const nextDefaultTimes = getDefaultContestTimes();
@@ -286,7 +300,7 @@ const AdminContest = () => {
               <p className="eyebrow">Admin panel</p>
               <h1 className="page-title mt-2">Create Contest</h1>
               <p className="page-subtitle mt-2">
-                Choose the contest date, start time, end time, and problems participants will solve.
+                Choose the contest date, start time, end time, and problems in India local time (Lucknow, UTC+05:30).
               </p>
             </div>
             <button className="secondary-button" onClick={handleLogoutAdmin}>
@@ -320,7 +334,7 @@ const AdminContest = () => {
 
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="contest-date">
-                    Contest Date
+                    Contest Date (Lucknow / India)
                   </label>
                   <input
                     id="contest-date"
@@ -339,7 +353,7 @@ const AdminContest = () => {
 
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="contest-start">
-                    Start Time
+                    Start Time (Lucknow / India)
                   </label>
                   <input
                     id="contest-start"
@@ -358,7 +372,7 @@ const AdminContest = () => {
 
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="contest-end">
-                    End Time
+                    End Time (Lucknow / India)
                   </label>
                   <input
                     id="contest-end"
