@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const SubmissionHistory = () => {
   const [submissions, setSubmissions] = useState([]);
@@ -28,13 +29,20 @@ const SubmissionHistory = () => {
   }, [userId]);
 
   return (
-    <div className="min-h-screen bg-gray-900 p-4 text-white sm:p-6">
-      <h1 className="mb-6 text-xl font-bold sm:text-2xl">Submission History</h1>
+    <>
+    <Navbar />
+    <div className="app-bg">
+    <div className="app-shell">
+      <div className="page-header">
+        <p className="eyebrow">Submissions</p>
+        <h1 className="page-title">Submission History</h1>
+        <p className="page-subtitle">Review previous attempts and inspect detailed test results.</p>
+      </div>
 
-      {!userId && <p>Please login to view submissions</p>}
+      {!userId && <p className="panel p-5 text-slate-400">Please login to view submissions</p>}
 
       {userId && submissions.length === 0 ? (
-        <p>No submissions found</p>
+        <p className="panel p-5 text-slate-400">No submissions found</p>
       ) : (
         <div className="space-y-4">
           {submissions.map((sub, index) => {
@@ -54,21 +62,21 @@ const SubmissionHistory = () => {
               <div
                 key={index}
                 onClick={() => navigate(`/submission/${sub._id}`)} // ✅ FIXED
-                className="cursor-pointer rounded border border-gray-700 bg-gray-800 p-4 transition hover:bg-gray-700"
+                className="panel cursor-pointer p-4 transition hover:border-emerald-500/40"
               >
-                <h2 className="break-words text-base font-semibold sm:text-lg">
+                <h2 className="break-words text-base font-semibold text-white sm:text-lg">
                   {sub.problem?.title || "Unknown Problem"}
                 </h2>
 
-                <p className="text-sm text-gray-400">
+                <p className="mt-1 text-sm text-slate-400">
                   {new Date(sub.createdAt).toLocaleString()}
                 </p>
 
-                <p className="mt-2">
-                  Status:{" "}
+                <p className="mt-3 text-sm text-slate-300">
+                  Status{" "}
                   <span
                     className={
-                      status === "Accepted" ? "text-green-400" : "text-red-400"
+                      status === "Accepted" ? "font-semibold text-emerald-400" : "font-semibold text-red-400"
                     }
                   >
                     {status}
@@ -76,7 +84,7 @@ const SubmissionHistory = () => {
                 </p>
 
                 {total > 0 && (
-                  <p className="text-sm">
+                  <p className="mt-1 text-sm text-slate-400">
                     Passed {passed} / {total} test cases
                   </p>
                 )}
@@ -86,6 +94,8 @@ const SubmissionHistory = () => {
         </div>
       )}
     </div>
+    </div>
+    </>
   );
 };
 

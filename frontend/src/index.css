@@ -28,3 +28,73 @@
   }
 }
 
+@layer components {
+  .app-bg {
+    @apply min-h-screen bg-[#0b0f14] text-white;
+  }
+
+  .app-shell {
+    @apply mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8;
+  }
+
+  .page-header {
+    @apply mb-8 flex flex-col gap-3;
+  }
+
+  .eyebrow {
+    @apply text-sm font-semibold uppercase tracking-wide text-emerald-400;
+  }
+
+  .page-title {
+    @apply text-2xl font-bold text-white sm:text-3xl;
+  }
+
+  .page-subtitle {
+    @apply max-w-3xl text-sm leading-6 text-slate-400 sm:text-base;
+  }
+
+  .panel {
+    @apply rounded-lg border border-white/10 bg-[#111827] shadow-xl;
+  }
+
+  .panel-soft {
+    @apply rounded-lg border border-slate-800 bg-[#0f172a];
+  }
+
+  .primary-button {
+    @apply inline-flex min-h-10 items-center justify-center rounded bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:bg-emerald-800;
+  }
+
+  .secondary-button {
+    @apply inline-flex min-h-10 items-center justify-center rounded border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-emerald-500 hover:text-emerald-300 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .field {
+    @apply rounded border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white outline-none transition focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20;
+  }
+
+  .status-pill {
+    @apply inline-flex items-center rounded-full border px-3 py-1 text-xs font-semibold;
+  }
+
+  .table-wrap {
+    @apply overflow-x-auto rounded-lg border border-white/10 bg-[#111827] shadow-xl;
+  }
+
+  .app-table {
+    @apply w-full min-w-[520px] text-left text-sm;
+  }
+
+  .app-table thead {
+    @apply bg-slate-950 text-xs uppercase tracking-wide text-slate-400;
+  }
+
+  .app-table th,
+  .app-table td {
+    @apply px-4 py-3;
+  }
+
+  .app-table tbody tr {
+    @apply border-t border-slate-800 text-slate-200;
+  }
+}

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Editor } from "@monaco-editor/react";
 import axios from "axios";
+import Navbar from "./Navbar";
 
 const Compilar = () => {
   const [sourceCode, setSourceCode] = useState("");
@@ -81,12 +82,18 @@ if __name__ == "__main__":
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col lg:flex-row">
+    <>
+    <Navbar />
+    <div className="app-bg flex min-h-[calc(100vh-4rem)] w-full flex-col gap-4 p-4 lg:flex-row lg:p-6">
       {/* Left */}
-      <div className="flex min-h-[70vh] w-full flex-col lg:min-h-screen lg:w-1/2">
-        <div className="bg-gray-900 text-white p-4 flex justify-between items-center">
+      <div className="panel flex min-h-[70vh] w-full flex-col overflow-hidden lg:min-h-[calc(100vh-7rem)] lg:w-1/2">
+        <div className="flex items-center justify-between border-b border-slate-800 bg-[#111827] p-4 text-white">
+          <div>
+            <p className="eyebrow">Compiler</p>
+            <h1 className="mt-1 font-bold">Code Playground</h1>
+          </div>
           <select
-            className="bg-gray-800 text-white rounded-sm outline-none p-2"
+            className="field"
             value={languageId}
             onChange={(e) => setLanguageId(parseInt(e.target.value))}
           >
@@ -96,7 +103,7 @@ if __name__ == "__main__":
             
           </select>
         </div>
-        <div className="relative flex-1 pt-4">
+        <div className="relative flex-1 bg-[#0f172a] pt-4">
           <div className="h-full">
             <Editor
               height="min(70vh, 640px)"
@@ -114,7 +121,7 @@ if __name__ == "__main__":
           </div>
           <div className="flex justify-center p-4 lg:absolute lg:bottom-6 lg:right-4 lg:p-0">
             <button
-              className="text-green-600 border-2 border-green-800 hover:bg-green-700 hover:text-white rounded p-2"
+              className="primary-button"
               onClick={handleSubmit}
             >
               Submit
@@ -124,14 +131,15 @@ if __name__ == "__main__":
       </div>
 
       {/* Right */}
-      <div className="relative flex min-h-[50vh] w-full flex-col bg-gray-900 p-4 text-white lg:min-h-screen lg:w-1/2">
-        <h1 className="mb-4 text-gray-300">Your result will appear here</h1>
+      <div className="panel relative flex min-h-[50vh] w-full flex-col p-5 text-white lg:min-h-[calc(100vh-7rem)] lg:w-1/2">
+        <p className="eyebrow">Output</p>
+        <h1 className="mb-4 mt-1 font-bold">Your result will appear here</h1>
 
         {submissionResult && (
-          <div className="relative min-h-64 overflow-auto rounded-lg border border-gray-700 bg-gray-800 p-4 font-mono text-sm text-white lg:h-full">
+          <div className="panel-soft relative min-h-64 overflow-auto p-4 font-mono text-sm text-white lg:h-full">
             
             <button
-              className="absolute top-3 right-3 text-red-400 border border-red-600 hover:bg-red-600 hover:text-white rounded px-3 py-1 text-sm"
+              className="absolute right-3 top-3 rounded border border-red-500 px-3 py-1 text-sm text-red-300 hover:bg-red-600 hover:text-white"
               onClick={handleClearResult}
             >
               Clear
@@ -176,6 +184,7 @@ if __name__ == "__main__":
         )}
       </div>
     </div>
+    </>
   );
 };
 

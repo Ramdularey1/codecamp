@@ -13,49 +13,51 @@ const ProblemCategory = ({ data, isLoading = false }) => {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-4rem)] justify-center px-4 py-6 sm:px-6 lg:px-10">
-      <div className="flex w-full max-w-6xl flex-col rounded-md bg-[#423f3f] p-4 text-[#dbd7d7] sm:p-5">
-        <div className="relative">
-          <h1 className="text-2xl sm:text-3xl">
-            Top <br />
-            <span className="text-green-600">DSA</span> Problem
-          </h1>
-          {/* <div className="absolute right-16">
-              {message && <p>{message}</p>}
-            </div> */}
+    <div className="app-bg">
+    <div className="app-shell">
+      <div className="page-header">
+        <p className="eyebrow">Problem library</p>
+        <h1 className="page-title">Top DSA Problems</h1>
+        <p className="page-subtitle">Choose a challenge, review the difficulty, and jump into the editor when you are ready.</p>
+      </div>
+      <div className="panel p-4 sm:p-5">
+        <div className="mb-3 flex items-center justify-between border-b border-slate-800 pb-4">
+          <p className="text-sm font-semibold text-slate-300">Available challenges</p>
+          <span className="status-pill border-emerald-500/30 bg-emerald-500/10 text-emerald-300">
+            {data.length} Problems
+          </span>
         </div>
         {isLoading ? (
-          <p>Loading...</p>
+          <p className="py-8 text-center text-slate-400">Loading problems...</p>
         ) : data.length === 0 ? (
-          <p>No problems found</p>
+          <p className="py-8 text-center text-slate-400">No problems found</p>
         ) : (
           data.map((item) => (
             <div
               key={item._id}
-              className="mt-8 flex flex-col border-b-2 border-[#6e6b6b] p-4"
+              className="flex flex-col gap-5 border-b border-slate-800 p-4 last:border-b-0 sm:flex-row sm:items-center sm:justify-between"
             >
-              <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0">
-                  <h1 className="break-words text-lg font-bold sm:text-xl">{item.title}</h1>
-                  <div className="mt-4 flex flex-wrap gap-3">
-                    <p className="text-green-600">Amazon</p>
-                    <p className="text-green-600">Facebook</p>
+                  <h2 className="break-words text-lg font-bold text-white sm:text-xl">{item.title}</h2>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    <span className="rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300">Amazon</span>
+                    <span className="rounded-full bg-slate-800 px-3 py-1 text-xs font-semibold text-slate-300">Facebook</span>
+                    <span className="rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300">{item.difficulty}</span>
                   </div>
                 </div>
                 <div className="shrink-0 sm:text-right">
                   <button
-                    className="h-10 w-full rounded border-2 border-green-600 px-4 font-medium text-green-600 hover:bg-green-600 hover:text-white sm:w-44"
+                    className="primary-button w-full sm:w-44"
                     onClick={() => handleSolveProblem(item._id)}
                   >
                     Solve Problem
                   </button>
-                  <p className="text-center mt-2">{item.difficulty}</p>
                 </div>
-              </div>
             </div>
           ))
         )}
       </div>
+    </div>
     </div>
   );
 };

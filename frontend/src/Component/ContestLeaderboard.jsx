@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import socket from "../socket";
+import Navbar from "./Navbar";
 
 const ContestLeaderboard = () => {
   const [data, setData] = useState([]);
@@ -36,25 +37,32 @@ const ContestLeaderboard = () => {
   }, [id]);
 
   return (
-    <div className="min-h-screen bg-gray-900 p-4 text-white sm:p-6">
-      <h1 className="mb-6 text-xl font-bold sm:text-2xl">🏆 Live Contest Leaderboard</h1>
+    <>
+    <Navbar />
+    <div className="app-bg">
+    <div className="app-shell">
+      <div className="page-header">
+        <p className="eyebrow">Live contest</p>
+        <h1 className="page-title">Contest Leaderboard</h1>
+        <p className="page-subtitle">Live rankings update as contest submissions are scored.</p>
+      </div>
 
-      <div className="overflow-x-auto">
-      <table className="min-w-[520px] w-full border border-gray-700">
+      <div className="table-wrap">
+      <table className="app-table">
         <thead>
-          <tr className="bg-gray-800">
-            <th className="p-2">Rank</th>
-            <th className="p-2">User</th>
-            <th className="p-2">Score</th>
+          <tr>
+            <th>Rank</th>
+            <th>User</th>
+            <th>Score</th>
           </tr>
         </thead>
 
         <tbody>
           {data.map((item, index) => (
-            <tr key={index} className="text-center border-t border-gray-700">
-              <td className="p-2">{index + 1}</td>
-              <td className="p-2">{item.user.username}</td>
-              <td className="p-2 text-green-400">
+            <tr key={index}>
+              <td className="font-semibold text-white">#{index + 1}</td>
+              <td>{item.user.username}</td>
+              <td className="font-semibold text-emerald-400">
                 {item.totalScore}
               </td>
             </tr>
@@ -63,6 +71,8 @@ const ContestLeaderboard = () => {
       </table>
       </div>
     </div>
+    </div>
+    </>
   );
 };
 

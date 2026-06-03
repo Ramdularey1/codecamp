@@ -28,7 +28,7 @@ function App() {
     <PersistGate loading={null} persistor={persistor}>
       <Router>
        
-        <main className="min-h-screen w-full overflow-x-hidden bg-gradient-to-b from-[#383636] to-[#090909]">
+        <main className="min-h-screen w-full overflow-x-hidden bg-[#0b0f14]">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/problem" element={<Problem />} />

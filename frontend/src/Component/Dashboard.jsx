@@ -9,6 +9,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
+import Navbar from "./Navbar";
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -35,9 +36,12 @@ const Dashboard = () => {
 
   if (!stats) {
     return (
-      <div className="min-h-screen bg-gray-900 p-4 text-white sm:p-6">
-        Loading dashboard...
-      </div>
+      <>
+        <Navbar />
+        <div className="app-bg">
+          <div className="app-shell text-slate-400">Loading dashboard...</div>
+        </div>
+      </>
     );
   }
 
@@ -48,61 +52,68 @@ const Dashboard = () => {
   }));
 
   return (
-    <div className="min-h-screen bg-gray-900 p-4 text-white sm:p-6">
-      <h1 className="mb-6 text-xl font-bold sm:text-2xl">📊 Dashboard</h1>
+    <>
+    <Navbar />
+    <div className="app-bg">
+    <div className="app-shell">
+      <div className="page-header">
+        <p className="eyebrow">Your progress</p>
+        <h1 className="page-title">Dashboard</h1>
+        <p className="page-subtitle">Track your submissions, acceptance rate, and recent problem-solving activity.</p>
+      </div>
 
      
       <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="bg-gray-800 p-4 rounded text-center">
-          <p className="text-gray-400">Total</p>
-          <p className="text-xl font-bold">{stats.total}</p>
+        <div className="panel p-5">
+          <p className="text-sm text-slate-400">Total</p>
+          <p className="mt-2 text-3xl font-bold">{stats.total}</p>
         </div>
 
-        <div className="bg-gray-800 p-4 rounded text-center">
-          <p className="text-gray-400">Accepted</p>
-          <p className="text-green-400 text-xl font-bold">
+        <div className="panel p-5">
+          <p className="text-sm text-slate-400">Accepted</p>
+          <p className="mt-2 text-3xl font-bold text-emerald-400">
             {stats.accepted}
           </p>
         </div>
 
-        <div className="bg-gray-800 p-4 rounded text-center">
-          <p className="text-gray-400">Wrong</p>
-          <p className="text-red-400 text-xl font-bold">
+        <div className="panel p-5">
+          <p className="text-sm text-slate-400">Wrong</p>
+          <p className="mt-2 text-3xl font-bold text-red-400">
             {stats.wrong}
           </p>
         </div>
 
-        <div className="bg-gray-800 p-4 rounded text-center">
-          <p className="text-gray-400">Success %</p>
-          <p className="text-blue-400 text-xl font-bold">
+        <div className="panel p-5">
+          <p className="text-sm text-slate-400">Success %</p>
+          <p className="mt-2 text-3xl font-bold text-sky-400">
             {stats.successRate}%
           </p>
         </div>
       </div>
 
      
-      <div className="bg-gray-800 p-4 rounded mb-6 border border-gray-700">
-        <h2 className="font-bold mb-4">📈 Submission Trend</h2>
+      <div className="panel mb-6 p-5">
+        <h2 className="mb-4 font-bold">Submission Trend</h2>
 
         <ResponsiveContainer width="100%" height={250}>
           <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
+            <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
+            <XAxis dataKey="name" stroke="#94a3b8" />
+            <YAxis stroke="#94a3b8" />
             <Tooltip />
-            <Line type="monotone" dataKey="success" />
+            <Line type="monotone" dataKey="success" stroke="#10b981" strokeWidth={2} />
           </LineChart>
         </ResponsiveContainer>
       </div>
 
       
       <div>
-        <h2 className="text-lg font-bold mb-4">Recent Activity</h2>
+        <h2 className="mb-4 text-lg font-bold">Recent Activity</h2>
 
         {stats.recent.map((sub, index) => (
           <div
             key={index}
-            className="bg-gray-800 p-3 rounded mb-2 border border-gray-700"
+            className="panel-soft mb-3 p-4"
           >
             <p className="font-semibold">
               {sub.problem?.title || "Problem"}
@@ -121,6 +132,8 @@ const Dashboard = () => {
         ))}
       </div>
     </div>
+    </div>
+    </>
   );
 };
 

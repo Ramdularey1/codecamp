@@ -119,7 +119,7 @@ const Navbar = () => {
   return (
     <>
       {/* 🔥 Navbar */}
-      <div className="sticky top-0 z-50 flex min-h-16 w-full items-center justify-between bg-black px-4 text-white sm:px-6 lg:px-10">
+      <div className="sticky top-0 z-50 flex min-h-16 w-full items-center justify-between border-b border-white/10 bg-[#0b0f14]/95 px-4 text-white shadow-lg backdrop-blur sm:px-6 lg:px-10">
         <div className="shrink-0">
           <Link to={"/"}>
             <img
@@ -133,42 +133,42 @@ const Navbar = () => {
         <div className="flex min-w-0 items-center justify-end">
           
           {/* 🔥 Desktop Menu */}
-          <div className="hidden items-center gap-4 text-sm lg:flex xl:gap-6">
-            <Link to="/problem" onFocus={prefetchProblems} onMouseEnter={prefetchProblems}>
+          <div className="hidden items-center gap-1 text-sm lg:flex">
+            <Link className="rounded px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white" to="/problem" onFocus={prefetchProblems} onMouseEnter={prefetchProblems}>
               Problem
             </Link>
-            <Link to="/submissions">Submissions</Link>
-            <Link to="/compilar">Compilar</Link>
+            <Link className="rounded px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white" to="/submissions">Submissions</Link>
+            <Link className="rounded px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white" to="/compilar">Compilar</Link>
 
             {/* ✅ Contest Link */}
-            <Link to={`/contest/${contestId}`}>Contest</Link>
-            <Link to={`/contest/${contestId}/leaderboard`}>Contest Leaderboard</Link>
+            <Link className="rounded px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white" to={`/contest/${contestId}`}>Contest</Link>
+            <Link className="rounded px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white" to={`/contest/${contestId}/leaderboard`}>Contest Leaderboard</Link>
 
-            <button onClick={handleAccount}>Account</button>
+            <button className="secondary-button ml-2" onClick={handleAccount}>Account</button>
 
             {/* 🔥 Account Dropdown */}
             <div
               ref={logoutRef}
-              className={`absolute right-4 top-16 z-[999] rounded-md bg-[#1d1c1c] shadow-lg sm:right-6 lg:right-10 ${
+              className={`absolute right-4 top-16 z-[999] rounded-lg border border-white/10 bg-[#111827] shadow-2xl sm:right-6 lg:right-10 ${
                 isLogoutVisible ? "block" : "hidden"
               }`}
             >
-              <div className="flex w-64 max-w-[calc(100vw-2rem)] flex-col items-center gap-2 p-4">
+              <div className="flex w-64 max-w-[calc(100vw-2rem)] flex-col items-center gap-3 p-4">
                 <img
                   className="h-24 w-24 rounded-md object-cover"
                   src="/user.png"
                   alt="user"
                 />
 
-                <h1>{user?.data?.username}</h1>
-                <Link to = "/dashboard">Dashboard</Link>
-                <Link to = "/leaderboard">Leaderboard</Link>
+                <h1 className="font-semibold">{user?.data?.username || "Guest"}</h1>
+                <Link className="text-sm text-slate-300 hover:text-emerald-300" to = "/dashboard">Dashboard</Link>
+                <Link className="text-sm text-slate-300 hover:text-emerald-300" to = "/leaderboard">Leaderboard</Link>
                 {user ? (
-                  <h1 className="cursor-pointer" onClick={handleLogoutToggle}>
+                  <h1 className="cursor-pointer text-sm font-semibold text-red-300 hover:text-red-200" onClick={handleLogoutToggle}>
                     Logout
                   </h1>
                 ) : (
-                  <h1 className="cursor-pointer" onClick={handleLogin}>
+                  <h1 className="cursor-pointer text-sm font-semibold text-emerald-300 hover:text-emerald-200" onClick={handleLogin}>
                     Login
                   </h1>
                 )}
@@ -182,7 +182,7 @@ const Navbar = () => {
             <button
               ref={buttonRef}
               onClick={toggleMenu}
-              className="rounded border border-gray-700 px-3 py-2 text-sm focus:outline-none"
+              className="rounded border border-slate-700 px-3 py-2 text-sm text-slate-100 focus:outline-none"
             >
               {isOpen ? "Close" : "Menu"}
             </button>
@@ -194,24 +194,24 @@ const Navbar = () => {
       {isOpen && (
         <div
           ref={menuRef}
-          className="absolute right-0 top-16 z-50 flex w-full max-w-sm flex-col items-center bg-black p-4 text-white shadow-lg lg:hidden"
+          className="absolute right-0 top-16 z-50 flex w-full max-w-sm flex-col items-stretch gap-1 border border-white/10 bg-[#111827] p-4 text-white shadow-2xl lg:hidden"
         >
           <Link
             to="/problem"
-            className="py-2"
+            className="rounded px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white"
             onClick={toggleMenu}
             onTouchStart={prefetchProblems}
           >
             Problem
           </Link>
-          <Link to="/submissions" className="py-2" onClick={toggleMenu}>
+          <Link to="/submissions" className="rounded px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white" onClick={toggleMenu}>
             Submissions
           </Link>
 
           {/* ✅ Contest Link */}
           <Link
             to={`/contest/${contestId}`}
-            className="py-2"
+            className="rounded px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white"
             onClick={toggleMenu}
           >
             Contest
@@ -219,26 +219,26 @@ const Navbar = () => {
 
           <Link
             to="/compilar"
-            className="py-2"
+            className="rounded px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white"
             onClick={toggleMenu}
           >
             Compilar
           </Link>
           <Link
             to={`/contest/${contestId}/leaderboard`}
-            className="py-2"
+            className="rounded px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white"
             onClick={toggleMenu}
           >
             Contest Leaderboard
           </Link>
-          <Link to="/leaderboard" className="py-2" onClick={toggleMenu}>
+          <Link to="/leaderboard" className="rounded px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white" onClick={toggleMenu}>
             Leaderboard
           </Link>
-          <Link to="/dashboard" className="py-2" onClick={toggleMenu}>
+          <Link to="/dashboard" className="rounded px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white" onClick={toggleMenu}>
             Dashboard
           </Link>
 
-          <div className="py-2" onClick={toggleMenu}>
+          <div className="rounded px-3 py-2" onClick={toggleMenu}>
             {user ? (
               <h1 className="cursor-pointer" onClick={handleLogoutToggle}>
                 Logout

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 
 const ContestPage = () => {
   const [contest, setContest] = useState(null);
@@ -67,7 +68,14 @@ const ContestPage = () => {
   };
 
   if (!contest)
-    return <p className="text-white p-6">Loading contest...</p>;
+    return (
+      <>
+        <Navbar />
+        <div className="app-bg">
+          <div className="app-shell text-slate-400">Loading contest...</div>
+        </div>
+      </>
+    );
 
   const now = new Date().getTime();
   const start = new Date(contest.startTime).getTime();
@@ -79,63 +87,68 @@ const ContestPage = () => {
   else status = "ended";
 
   return (
-    <div className="min-h-screen bg-gray-900 p-4 text-white sm:p-6">
-      
-      
-      <h1 className="mb-2 break-words text-xl font-bold sm:text-2xl">{contest.title}</h1>
+    <>
+    <Navbar />
+    <div className="app-bg">
+    <div className="app-shell">
+      <div className="page-header">
+        <p className="eyebrow">Contest arena</p>
+        <h1 className="page-title">{contest.title}</h1>
+        <p className="page-subtitle">Review contest timing and solve active problems while the contest is running.</p>
+      </div>
 
-      
-      <p className="mb-2 text-gray-300">
-        Starts At:{" "}
-        <span className="break-words font-semibold">
-          {new Date(contest.startTime).toLocaleString("en-IN", {
-            timeZone: "Asia/Kolkata",
-          })}
-        </span>
-      </p>
+      <div className="panel mb-6 grid gap-4 p-5 sm:grid-cols-3">
+        <div>
+          <p className="text-sm text-slate-400">Starts At</p>
+          <p className="mt-2 break-words font-semibold">
+            {new Date(contest.startTime).toLocaleString("en-IN", {
+              timeZone: "Asia/Kolkata",
+            })}
+          </p>
+        </div>
 
-      
-      <p className="mb-2">
-        Status:{" "}
-        <span
-          className={
-            status === "running"
-              ? "text-green-400"
+        <div>
+          <p className="text-sm text-slate-400">Status</p>
+          <span
+            className={`status-pill mt-2 ${
+              status === "running"
+                ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                : status === "not_started"
+                ? "border-yellow-500/30 bg-yellow-500/10 text-yellow-300"
+                : "border-red-500/30 bg-red-500/10 text-red-300"
+            }`}
+          >
+            {status === "running"
+              ? "Running"
               : status === "not_started"
-              ? "text-yellow-400"
-              : "text-red-400"
-          }
-        >
-          {status === "running"
-            ? "Running"
-            : status === "not_started"
-            ? "Not Started"
-            : "Ended"}
-        </span>
-      </p>
+              ? "Not Started"
+              : "Ended"}
+          </span>
+        </div>
 
-    
-      <div className="mb-6 text-base sm:text-lg">
-        ⏱{" "}
-        {status === "not_started"
-          ? "Starts In:"
-          : status === "running"
-          ? "Time Left:"
-          : "Contest Ended"}{" "}
-        <span className="text-red-400 font-bold">
-          {formatTime(timeLeft)}
-        </span>
+        <div>
+          <p className="text-sm text-slate-400">
+            {status === "not_started"
+              ? "Starts In"
+              : status === "running"
+              ? "Time Left"
+              : "Contest Ended"}
+          </p>
+          <p className="mt-2 text-2xl font-bold text-emerald-300">
+            {formatTime(timeLeft)}
+          </p>
+        </div>
       </div>
 
     
       {status === "not_started" && (
-        <p className="text-yellow-400 mb-4">
+        <p className="mb-4 rounded border border-yellow-500/30 bg-yellow-500/10 p-4 text-yellow-200">
           Contest will start at scheduled time
         </p>
       )}
 
       {status === "ended" && (
-        <p className="text-red-400 mb-4">
+        <p className="mb-4 rounded border border-red-500/30 bg-red-500/10 p-4 text-red-200">
           Contest has ended
         </p>
       )}
@@ -145,13 +158,13 @@ const ContestPage = () => {
         {contest.problems?.map((p, index) => (
           <div
             key={p._id}
-            className="flex flex-col gap-4 rounded border border-gray-700 bg-gray-800 p-4 transition hover:bg-gray-700 sm:flex-row sm:items-center sm:justify-between"
+            className="panel flex flex-col gap-4 p-4 transition hover:border-emerald-500/40 sm:flex-row sm:items-center sm:justify-between"
           >
             <div>
-              <p className="break-words font-semibold">
+              <p className="break-words font-semibold text-white">
                 {index + 1}. {p.title}
               </p>
-              <p className="text-gray-400 text-sm">
+              <p className="mt-1 text-sm text-slate-400">
                 {p.difficulty}
               </p>
             </div>
@@ -159,10 +172,10 @@ const ContestPage = () => {
             <button
               disabled={status !== "running"}
               onClick={() => navigate(`/code/${p._id}`)}
-              className={`text-blue-400 ${
+              className={`secondary-button ${
                 status !== "running"
                   ? "opacity-50 cursor-not-allowed"
-                  : "hover:underline"
+                  : ""
               }`}
             >
               {status === "ended" ? "Closed" : "Solve →"}
@@ -171,6 +184,8 @@ const ContestPage = () => {
         ))}
       </div>
     </div>
+    </div>
+    </>
   );
 };
 

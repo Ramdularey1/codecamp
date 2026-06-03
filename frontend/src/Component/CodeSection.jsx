@@ -57,7 +57,7 @@ if __name__ == "__main__":
 
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const userId = user.data._id;
+  const userId = user?.data?._id;
   const contestId = "69d9e4c4cb98e5f970ab167a";
   const handleSubmit = async () => {
     try {
@@ -90,31 +90,32 @@ if __name__ == "__main__":
   return (
     <>
       <Navbar />
-      <div className="flex min-h-[calc(100vh-4rem)] flex-col lg:flex-row">
+      <div className="app-bg flex min-h-[calc(100vh-4rem)] flex-col gap-4 p-4 lg:flex-row lg:p-6">
         {/* Left section */}
-        <div className="max-h-none w-full overflow-auto bg-gray-900 text-white lg:max-h-[calc(100vh-4rem)] lg:w-1/2">
-          <div className="border-b border-gray-700 p-4 sm:p-6">
-            <h1 className="break-words text-xl font-bold sm:text-2xl">
+        <div className="panel max-h-none w-full overflow-auto lg:max-h-[calc(100vh-7rem)] lg:w-1/2">
+          <div className="border-b border-slate-800 p-4 sm:p-6">
+            <p className="eyebrow">Problem</p>
+            <h1 className="mt-2 break-words text-xl font-bold sm:text-2xl">
               {currentProblem?.title || "Loading..."}
             </h1>
-            <p className="text-sm mt-2 text-gray-400 font-medium">
+            <p className="mt-3 text-sm font-medium text-slate-400">
               Difficulty:{" "}
-              <span className="font-extrabold">
+              <span className="font-extrabold text-emerald-300">
                 {currentProblem?.difficulty || "Loading..."}
               </span>
             </p>
           </div>
-          <div className="p-4 text-gray-300 sm:p-6">
+          <div className="p-4 text-slate-300 sm:p-6">
             <div>
               <h3>{currentProblem?.description || "Loading description..."}</h3>
             </div>
             <div className="mt-6">
-              <h1 className="font-bold text-lg">Example:</h1>
+              <h1 className="text-lg font-bold text-white">Examples</h1>
               {currentProblem?.testCases?.length > 0 ? (
                 currentProblem.testCases.map((item, index) => (
                   <div
                     key={index}
-                    className="mt-4 flex flex-col gap-2 overflow-x-auto rounded-md border border-gray-700 bg-gray-800 p-3 text-gray-300"
+                    className="panel-soft mt-4 flex flex-col gap-2 overflow-x-auto p-4 text-slate-300"
                   >
                     <h1 className="font-semibold">
                       Input: <span className="font-normal">{item.input}</span>
@@ -129,18 +130,18 @@ if __name__ == "__main__":
                   </div>
                 ))
               ) : (
-                <p className="text-gray-400">No test cases available</p>
+                <p className="text-slate-400">No test cases available</p>
               )}
               <div className="mt-6">
-                <h1 className="font-bold text-lg">
+                <h1 className="text-lg font-bold text-white">
                   Expected Time Complexity:{" "}
-                  <span className="font-normal">O(n)</span>
+                  <span className="font-normal text-slate-300">O(n)</span>
                 </h1>
-                <h1 className="font-bold text-lg">
+                <h1 className="text-lg font-bold text-white">
                   Expected Auxiliary Space:{" "}
-                  <span className="font-normal">O(1)</span>
+                  <span className="font-normal text-slate-300">O(1)</span>
                 </h1>
-                <h1 className="mt-4 font-bold text-lg">Constraints:</h1>
+                <h1 className="mt-4 text-lg font-bold text-white">Constraints</h1>
                 <div>{/* Add constraints content here */}</div>
               </div>
             </div>
@@ -148,10 +149,10 @@ if __name__ == "__main__":
         </div>
 
         {/* Right section */}
-        <div className="flex w-full flex-col lg:w-1/2">
-          <div className="flex items-center justify-between bg-gray-900 p-4 text-white">
+        <div className="panel flex w-full flex-col overflow-hidden lg:w-1/2">
+          <div className="flex items-center justify-between border-b border-slate-800 bg-[#111827] p-4 text-white">
             <select
-              className="bg-gray-800 text-white rounded-sm outline-none p-2"
+              className="field"
               value={languageId}
               onChange={(e) => setLanguageId(parseInt(e.target.value))}
             >
@@ -160,7 +161,7 @@ if __name__ == "__main__":
               <option value="28">Python</option>
             </select>
           </div>
-          <div className="flex-1 pt-4">
+          <div className="flex-1 bg-[#0f172a] pt-4">
             <div className="h-full">
               <Editor
                 height="min(70vh, 620px)"
@@ -182,7 +183,7 @@ if __name__ == "__main__":
             </div>
             <div className="flex justify-center p-4 lg:justify-end">
               <button
-                className="text-green-600 border-2 border-green-800 hover:bg-green-700 hover:text-white rounded p-2"
+                className="primary-button"
                 onClick={handleSubmit}
               >
                 Submit
@@ -193,7 +194,7 @@ if __name__ == "__main__":
       </div>
 
       {submissionResult && (
-        <div className="fixed inset-x-0 bottom-0 z-50 max-h-[85vh] overflow-auto bg-gray-700 p-4 text-white shadow-2xl sm:p-6 lg:bottom-auto lg:left-5 lg:right-auto lg:top-44 lg:w-[47%] lg:rounded-lg">
+        <div className="fixed inset-x-0 bottom-0 z-50 max-h-[85vh] overflow-auto border border-white/10 bg-[#111827] p-4 text-white shadow-2xl sm:p-6 lg:bottom-auto lg:left-5 lg:right-auto lg:top-44 lg:w-[47%] lg:rounded-lg">
           
           {(() => {
             const total = submissionResult.length;
@@ -211,7 +212,7 @@ if __name__ == "__main__":
                   </span>
                 </h2>
 
-                <p className="text-sm text-gray-300">
+                <p className="text-sm text-slate-300">
                   Passed {passedCount} / {total} test cases
                 </p>
               </div>
@@ -224,7 +225,7 @@ if __name__ == "__main__":
           {submissionResult.map((result, index) => (
             <div
               key={index}
-              className="mt-4 p-3 bg-gray-800 rounded border border-gray-600"
+              className="panel-soft mt-4 p-3"
             >
               <p className="font-semibold">Test Case {index + 1}</p>
 
@@ -253,7 +254,7 @@ if __name__ == "__main__":
 
           
           <button
-            className="mt-4 text-red-400 border border-red-600 hover:bg-red-600 hover:text-white rounded px-3 py-1"
+            className="mt-4 rounded border border-red-500 px-3 py-1 text-red-300 hover:bg-red-600 hover:text-white"
             onClick={handleClearResult}
           >
             Clear Result
