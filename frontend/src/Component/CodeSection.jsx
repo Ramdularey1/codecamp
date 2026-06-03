@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCurrentProblem } from "../utils/currentProblem";
 import { Editor } from "@monaco-editor/react";
@@ -9,6 +9,7 @@ import axios from "axios";
 const CodeSections = () => {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const location = useLocation();
   
   const problems = useSelector((state) => state.allproblems.allProblems);
   const currentProblem = useSelector(
@@ -60,7 +61,7 @@ if __name__ == "__main__":
   const user = JSON.parse(localStorage.getItem("user"));
 
   const userId = user?.data?._id;
-  const contestId = "69d9e4c4cb98e5f970ab167a";
+  const contestId = location.state?.contestId || null;
   const handleSubmit = async () => {
     if (isSubmitting) return;
 
@@ -79,7 +80,7 @@ if __name__ == "__main__":
           source_code: sourceCode,
           language_id: languageId,
           stdin: testCaseInputs,
-          contestId: contestId, 
+          contestId,
         },
       );
 

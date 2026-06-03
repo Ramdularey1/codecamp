@@ -100,6 +100,19 @@ export const getContest = async (req, res) => {
   }
 };
 
+export const getAllContests = async (req, res) => {
+  try {
+    const contests = await Contest.find()
+      .populate("problems")
+      .sort({ createdAt: -1, startTime: -1 });
+
+    res.json({ data: contests });
+  } catch (err) {
+    console.error("Failed to fetch contests:", err);
+    res.status(500).json({ error: "Failed to fetch contests" });
+  }
+};
+
 export const getLeaderboard = async (req, res) => {
   try {
     const leaderboard = await Submission.aggregate([

@@ -4,6 +4,7 @@ import Navbar from "./Navbar";
 
 const ADMIN_EMAIL = "testadmin@gmail.com";
 const ADMIN_PASSWORD = "123456";
+const LOCAL_CONTESTS_KEY = "codecamp-created-contests";
 
 const getTodayDate = () => new Date().toISOString().split("T")[0];
 const buildDateTimeForToday = (time) => `${getTodayDate()}T${time}`;
@@ -123,9 +124,29 @@ const AdminContest = () => {
       );
 
       const contestId = response.data?.data?._id;
+      const createdContest = response.data?.data;
+      if (createdContest) {
+        const existingContests = JSON.parse(
+          localStorage.getItem(LOCAL_CONTESTS_KEY) || "[]",
+        );
+        localStorage.setItem(
+          LOCAL_CONTESTS_KEY,
+          JSON.stringify([
+            {
+              ...createdContest,
+              problems: problems.filter((problem) =>
+                selectedProblems.includes(problem._id),
+              ),
+            },
+            ...existingContests.filter(
+              (contest) => contest._id !== createdContest._id,
+            ),
+          ]),
+        );
+      }
       setMessage(
         contestId
-          ? `Contest created successfully. Contest ID: ${contestId}`
+          ? `Contest created successfully. It is now visible on the Contests page. Contest ID: ${contestId}`
           : "Contest created successfully.",
       );
       setFormData({ title: "", startTime: "", endTime: "" });

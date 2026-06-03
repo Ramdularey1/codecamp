@@ -18,9 +18,6 @@ const Navbar = () => {
   const buttonRef = useRef(null);
   const problemPrefetchAttemptedRef = useRef(false);
 
-  // ✅ Contest ID (CHANGE THIS WHEN NEEDED)
-  const contestId = "69d9e4c4cb98e5f970ab167a";
-
   const prefetchProblems = useCallback(async () => {
     if (
       problems.length > 0 ||
@@ -142,8 +139,7 @@ const Navbar = () => {
             <Link className="rounded px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white" to="/compilar">Compilar</Link>
 
             {/* ✅ Contest Link */}
-            <Link className="rounded px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white" to={`/contest/${contestId}`}>Contest</Link>
-            <Link className="rounded px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white" to={`/contest/${contestId}/leaderboard`}>Contest Leaderboard</Link>
+            <Link className="rounded px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white" to="/contests">Contests</Link>
             {isAdminUser && (
               <Link className="rounded px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white" to="/admin/contest">Admin</Link>
             )}
@@ -214,26 +210,18 @@ const Navbar = () => {
 
           {/* ✅ Contest Link */}
           <Link
-            to={`/contest/${contestId}`}
+            to="/contests"
             className="rounded px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white"
             onClick={toggleMenu}
           >
-            Contest
+            Contests
           </Link>
-
           <Link
             to="/compilar"
             className="rounded px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white"
             onClick={toggleMenu}
           >
             Compilar
-          </Link>
-          <Link
-            to={`/contest/${contestId}/leaderboard`}
-            className="rounded px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white"
-            onClick={toggleMenu}
-          >
-            Contest Leaderboard
           </Link>
           {isAdminUser && (
             <Link to="/admin/contest" className="rounded px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white" onClick={toggleMenu}>

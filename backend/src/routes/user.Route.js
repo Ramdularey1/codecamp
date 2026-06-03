@@ -6,7 +6,7 @@ import { getSubmissionsByUser } from "../controllers/submission.controller.js";
 import { getproblemById } from "../controllers/problem.controller.js";
 import { getLeaderboard } from "../controllers/problem.controller.js";
 import { getUserStats } from "../controllers/problem.controller.js";
-import { getContest } from "../controllers/problem.controller.js";
+import { getAllContests, getContest } from "../controllers/problem.controller.js";
 import { createContest } from "../controllers/submission.controller.js";
 import { getContestLeaderboard } from "../controllers/submission.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
@@ -28,12 +28,12 @@ router.route("/getproblem").get(getAllProblems);
 router.route("/getproblemById/:id").get(getproblemById);
 router.get("/leaderboard", getLeaderboard);
 router.get("/stats/:userId", getUserStats);
+router.get("/contests", getAllContests);
 router.get("/contest/:id", getContest);
 router.post("/contest", createContest);
 router.get("/contest-leaderboard/:id", getContestLeaderboard);
 export default router
     
-
 
 
 

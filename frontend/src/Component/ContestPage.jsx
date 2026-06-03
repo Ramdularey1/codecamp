@@ -171,7 +171,7 @@ const ContestPage = () => {
 
             <button
               disabled={status !== "running"}
-              onClick={() => navigate(`/code/${p._id}`)}
+              onClick={() => navigate(`/code/${p._id}`, { state: { contestId: id } })}
               className={`secondary-button ${
                 status !== "running"
                   ? "opacity-50 cursor-not-allowed"
