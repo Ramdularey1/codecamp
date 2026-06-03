@@ -79,15 +79,15 @@ const ContestPage = () => {
   else status = "ended";
 
   return (
-    <div className="p-6 bg-gray-900 min-h-screen text-white">
+    <div className="min-h-screen bg-gray-900 p-4 text-white sm:p-6">
       
       
-      <h1 className="text-2xl font-bold mb-2">{contest.title}</h1>
+      <h1 className="mb-2 break-words text-xl font-bold sm:text-2xl">{contest.title}</h1>
 
       
       <p className="mb-2 text-gray-300">
         Starts At:{" "}
-        <span className="font-semibold">
+        <span className="break-words font-semibold">
           {new Date(contest.startTime).toLocaleString("en-IN", {
             timeZone: "Asia/Kolkata",
           })}
@@ -115,7 +115,7 @@ const ContestPage = () => {
       </p>
 
     
-      <div className="mb-6 text-lg">
+      <div className="mb-6 text-base sm:text-lg">
         ⏱{" "}
         {status === "not_started"
           ? "Starts In:"
@@ -145,10 +145,10 @@ const ContestPage = () => {
         {contest.problems?.map((p, index) => (
           <div
             key={p._id}
-            className="bg-gray-800 p-4 rounded border border-gray-700 flex justify-between items-center hover:bg-gray-700 transition"
+            className="flex flex-col gap-4 rounded border border-gray-700 bg-gray-800 p-4 transition hover:bg-gray-700 sm:flex-row sm:items-center sm:justify-between"
           >
             <div>
-              <p className="font-semibold">
+              <p className="break-words font-semibold">
                 {index + 1}. {p.title}
               </p>
               <p className="text-gray-400 text-sm">

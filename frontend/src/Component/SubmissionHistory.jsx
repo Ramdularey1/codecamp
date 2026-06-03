@@ -28,8 +28,8 @@ const SubmissionHistory = () => {
   }, [userId]);
 
   return (
-    <div className="p-6 bg-gray-900 min-h-screen text-white">
-      <h1 className="text-2xl font-bold mb-6">Submission History</h1>
+    <div className="min-h-screen bg-gray-900 p-4 text-white sm:p-6">
+      <h1 className="mb-6 text-xl font-bold sm:text-2xl">Submission History</h1>
 
       {!userId && <p>Please login to view submissions</p>}
 
@@ -54,9 +54,9 @@ const SubmissionHistory = () => {
               <div
                 key={index}
                 onClick={() => navigate(`/submission/${sub._id}`)} // ✅ FIXED
-                className="p-4 bg-gray-800 rounded border border-gray-700 cursor-pointer hover:bg-gray-700 transition"
+                className="cursor-pointer rounded border border-gray-700 bg-gray-800 p-4 transition hover:bg-gray-700"
               >
-                <h2 className="font-semibold text-lg">
+                <h2 className="break-words text-base font-semibold sm:text-lg">
                   {sub.problem?.title || "Unknown Problem"}
                 </h2>
 

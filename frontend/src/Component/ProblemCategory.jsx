@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-const ProblemCategory = ({ data }) => {
+const ProblemCategory = ({ data, isLoading = false }) => {
   const navigate = useNavigate();
 
   const handleSolveProblem = (id) => {
@@ -13,10 +13,10 @@ const ProblemCategory = ({ data }) => {
   };
 
   return (
-    <div className="flex justify-center h-[100%] p-10">
-      <div className="text-[#dbd7d7] bg-[#423f3f] w-10/12 flex flex-col p-5 ">
+    <div className="flex min-h-[calc(100vh-4rem)] justify-center px-4 py-6 sm:px-6 lg:px-10">
+      <div className="flex w-full max-w-6xl flex-col rounded-md bg-[#423f3f] p-4 text-[#dbd7d7] sm:p-5">
         <div className="relative">
-          <h1 className="text-[30px] ">
+          <h1 className="text-2xl sm:text-3xl">
             Top <br />
             <span className="text-green-600">DSA</span> Problem
           </h1>
@@ -24,25 +24,27 @@ const ProblemCategory = ({ data }) => {
               {message && <p>{message}</p>}
             </div> */}
         </div>
-        {data.length === 0 ? (
+        {isLoading ? (
           <p>Loading...</p>
+        ) : data.length === 0 ? (
+          <p>No problems found</p>
         ) : (
           data.map((item) => (
             <div
               key={item._id}
-              className="flex overflow-x-scroll scrollbar-thin flex-col mt-[50px] border-[#6e6b6b] p-4 border-b-2"
+              className="mt-8 flex flex-col border-b-2 border-[#6e6b6b] p-4"
             >
-              <div className="flex justify-between sm:flex-row md:">
-                <div>
-                  <h1 className="text-[20px] font-bold">{item.title}</h1>
-                  <div className="flex gap-3 mt-4">
+              <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+                <div className="min-w-0">
+                  <h1 className="break-words text-lg font-bold sm:text-xl">{item.title}</h1>
+                  <div className="mt-4 flex flex-wrap gap-3">
                     <p className="text-green-600">Amazon</p>
                     <p className="text-green-600">Facebook</p>
                   </div>
                 </div>
-                <div className="">
+                <div className="shrink-0 sm:text-right">
                   <button
-                    className="border-[2px] text-green-600 border-green-600 w-[180px] h-[40px] hover:bg-green-600 font-medium hover:text-white"
+                    className="h-10 w-full rounded border-2 border-green-600 px-4 font-medium text-green-600 hover:bg-green-600 hover:text-white sm:w-44"
                     onClick={() => handleSolveProblem(item._id)}
                   >
                     Solve Problem

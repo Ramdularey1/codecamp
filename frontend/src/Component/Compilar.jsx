@@ -81,9 +81,9 @@ if __name__ == "__main__":
   };
 
   return (
-    <div className="flex flex-col md:flex-row w-full h-screen">
+    <div className="flex min-h-screen w-full flex-col lg:flex-row">
       {/* Left */}
-      <div className="flex flex-col md:w-1/2 w-full h-full">
+      <div className="flex min-h-[70vh] w-full flex-col lg:min-h-screen lg:w-1/2">
         <div className="bg-gray-900 text-white p-4 flex justify-between items-center">
           <select
             className="bg-gray-800 text-white rounded-sm outline-none p-2"
@@ -96,10 +96,10 @@ if __name__ == "__main__":
             
           </select>
         </div>
-        <div className="flex-1 pt-4 relative">
+        <div className="relative flex-1 pt-4">
           <div className="h-full">
             <Editor
-              height="calc(100vh - 140px)" // Adjust height based on padding and space for the button
+              height="min(70vh, 640px)"
               language={
                 languageId === 4 ? "java" : languageId === 2 ? "cpp" : "python"
               }
@@ -112,7 +112,7 @@ if __name__ == "__main__":
               }}
             />
           </div>
-          <div className="flex absolute right-4 bottom-[70px] justify-center mt-2">
+          <div className="flex justify-center p-4 lg:absolute lg:bottom-6 lg:right-4 lg:p-0">
             <button
               className="text-green-600 border-2 border-green-800 hover:bg-green-700 hover:text-white rounded p-2"
               onClick={handleSubmit}
@@ -124,11 +124,11 @@ if __name__ == "__main__":
       </div>
 
       {/* Right */}
-      <div className="flex flex-col md:w-1/2 w-full bg-gray-900 text-white p-4 h-full relative">
+      <div className="relative flex min-h-[50vh] w-full flex-col bg-gray-900 p-4 text-white lg:min-h-screen lg:w-1/2">
         <h1 className="mb-4 text-gray-300">Your result will appear here</h1>
 
         {submissionResult && (
-          <div className="relative p-4 rounded-lg bg-gray-800 text-white font-mono text-sm h-full overflow-auto border border-gray-700">
+          <div className="relative min-h-64 overflow-auto rounded-lg border border-gray-700 bg-gray-800 p-4 font-mono text-sm text-white lg:h-full">
             
             <button
               className="absolute top-3 right-3 text-red-400 border border-red-600 hover:bg-red-600 hover:text-white rounded px-3 py-1 text-sm"

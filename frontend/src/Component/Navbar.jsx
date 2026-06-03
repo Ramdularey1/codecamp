@@ -1,21 +1,49 @@
 import axios from "axios";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useCallback, useState, useEffect, useRef } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import userImage from "../../public/user.png";
-import codecamp from "../../public/codecamp.png";
+import { useDispatch, useSelector } from "react-redux";
+import { updateAllProblems } from "../utils/allProblemSlice";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const problems = useSelector((state) => state.allproblems.allProblems);
 
   const [isOpen, setIsOpen] = useState(false);
   const [isLogoutVisible, setIsLogoutVisible] = useState(false);
+  const [isPrefetchingProblems, setIsPrefetchingProblems] = useState(false);
 
   const menuRef = useRef(null);
   const logoutRef = useRef(null);
   const buttonRef = useRef(null);
+  const problemPrefetchAttemptedRef = useRef(false);
 
   // ✅ Contest ID (CHANGE THIS WHEN NEEDED)
   const contestId = "69d9e4c4cb98e5f970ab167a";
+
+  const prefetchProblems = useCallback(async () => {
+    if (
+      problems.length > 0 ||
+      isPrefetchingProblems ||
+      problemPrefetchAttemptedRef.current
+    ) {
+      return;
+    }
+
+    problemPrefetchAttemptedRef.current = true;
+    setIsPrefetchingProblems(true);
+    try {
+      const response = await axios.get(
+        "https://codecamp-iffd.onrender.com/api/v1/users/getproblem",
+        { withCredentials: true },
+      );
+      dispatch(updateAllProblems(response.data.data || []));
+    } catch (error) {
+      console.log("Failed to prefetch problems", error);
+    } finally {
+      setIsPrefetchingProblems(false);
+    }
+  }, [dispatch, isPrefetchingProblems, problems.length]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -50,6 +78,14 @@ const Navbar = () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [isOpen, isLogoutVisible]);
+
+  useEffect(() => {
+    const timeoutId = setTimeout(prefetchProblems, 600);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [prefetchProblems]);
 
   const handleClick = () => {
     navigate("/signup", { state: { from: "register" } });
@@ -88,22 +124,24 @@ const Navbar = () => {
   return (
     <>
       {/* 🔥 Navbar */}
-      <div className="text-white flex justify-between items-center bg-black h-[60px]">
-        <div className="mx-[40px]">
+      <div className="sticky top-0 z-50 flex min-h-16 w-full items-center justify-between bg-black px-4 text-white sm:px-6 lg:px-10">
+        <div className="shrink-0">
           <Link to={"/"}>
             <img
-              className="w-[80px] h-[60px]"
-              src={codecamp}
+              className="h-14 w-20 object-contain"
+              src="/codecamp.png"
               alt="logo"
             />
           </Link>
         </div>
 
-        <div className="mx-[40px] flex items-center justify-between w-full md:w-[600px]">
+        <div className="flex min-w-0 items-center justify-end">
           
           {/* 🔥 Desktop Menu */}
-          <div className="hidden md:flex items-center justify-around w-full">
-            <Link to="/problem">Problem</Link>
+          <div className="hidden items-center gap-4 text-sm lg:flex xl:gap-6">
+            <Link to="/problem" onFocus={prefetchProblems} onMouseEnter={prefetchProblems}>
+              Problem
+            </Link>
             <Link to="/submissions">Submissions</Link>
             <Link to="/compilar">Compilar</Link>
 
@@ -116,14 +154,14 @@ const Navbar = () => {
             {/* 🔥 Account Dropdown */}
             <div
               ref={logoutRef}
-              className={`z-[999] absolute bg-[#1d1c1c] top-12 right-[40px] ${
+              className={`absolute right-4 top-16 z-[999] rounded-md bg-[#1d1c1c] shadow-lg sm:right-6 lg:right-10 ${
                 isLogoutVisible ? "block" : "hidden"
               }`}
             >
-              <div className="w-[250px] flex flex-col items-center p-4">
+              <div className="flex w-64 max-w-[calc(100vw-2rem)] flex-col items-center gap-2 p-4">
                 <img
-                  className="w-[100px] h-[100px] rounded-md"
-                  src={userImage}
+                  className="h-24 w-24 rounded-md object-cover"
+                  src="/user.png"
                   alt="user"
                 />
 
@@ -145,11 +183,11 @@ const Navbar = () => {
           </div>
 
           {/* 🔥 Mobile Menu Button */}
-          <div className="md:hidden absolute right-0 mx-[40px]">
+          <div className="lg:hidden">
             <button
               ref={buttonRef}
               onClick={toggleMenu}
-              className="focus:outline-none"
+              className="rounded border border-gray-700 px-3 py-2 text-sm focus:outline-none"
             >
               {isOpen ? "Close" : "Menu"}
             </button>
@@ -161,10 +199,18 @@ const Navbar = () => {
       {isOpen && (
         <div
           ref={menuRef}
-          className="md:hidden bg-black text-white flex flex-col items-center p-4 absolute right-0 w-[350px]"
+          className="absolute right-0 top-16 z-50 flex w-full max-w-sm flex-col items-center bg-black p-4 text-white shadow-lg lg:hidden"
         >
-          <Link to="/problem" className="py-2" onClick={toggleMenu}>
+          <Link
+            to="/problem"
+            className="py-2"
+            onClick={toggleMenu}
+            onTouchStart={prefetchProblems}
+          >
             Problem
+          </Link>
+          <Link to="/submissions" className="py-2" onClick={toggleMenu}>
+            Submissions
           </Link>
 
           {/* ✅ Contest Link */}
@@ -182,6 +228,19 @@ const Navbar = () => {
             onClick={toggleMenu}
           >
             Compilar
+          </Link>
+          <Link
+            to={`/contest/${contestId}/leaderboard`}
+            className="py-2"
+            onClick={toggleMenu}
+          >
+            Contest Leaderboard
+          </Link>
+          <Link to="/leaderboard" className="py-2" onClick={toggleMenu}>
+            Leaderboard
+          </Link>
+          <Link to="/dashboard" className="py-2" onClick={toggleMenu}>
+            Dashboard
           </Link>
 
           <div className="py-2" onClick={toggleMenu}>

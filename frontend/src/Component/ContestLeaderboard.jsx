@@ -36,10 +36,11 @@ const ContestLeaderboard = () => {
   }, [id]);
 
   return (
-    <div className="p-6 bg-gray-900 min-h-screen text-white">
-      <h1 className="text-2xl font-bold mb-6">🏆 Live Contest Leaderboard</h1>
+    <div className="min-h-screen bg-gray-900 p-4 text-white sm:p-6">
+      <h1 className="mb-6 text-xl font-bold sm:text-2xl">🏆 Live Contest Leaderboard</h1>
 
-      <table className="w-full border border-gray-700">
+      <div className="overflow-x-auto">
+      <table className="min-w-[520px] w-full border border-gray-700">
         <thead>
           <tr className="bg-gray-800">
             <th className="p-2">Rank</th>
@@ -60,6 +61,7 @@ const ContestLeaderboard = () => {
           ))}
         </tbody>
       </table>
+      </div>
     </div>
   );
 };

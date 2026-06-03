@@ -90,11 +90,11 @@ if __name__ == "__main__":
   return (
     <>
       <Navbar />
-      <div className="flex flex-col md:flex-row ">
+      <div className="flex min-h-[calc(100vh-4rem)] flex-col lg:flex-row">
         {/* Left section */}
-        <div className="md:w-1/2 w-full bg-gray-900 text-white overflow-auto">
-          <div className="p-6 border-b border-gray-700">
-            <h1 className="text-2xl font-bold">
+        <div className="max-h-none w-full overflow-auto bg-gray-900 text-white lg:max-h-[calc(100vh-4rem)] lg:w-1/2">
+          <div className="border-b border-gray-700 p-4 sm:p-6">
+            <h1 className="break-words text-xl font-bold sm:text-2xl">
               {currentProblem?.title || "Loading..."}
             </h1>
             <p className="text-sm mt-2 text-gray-400 font-medium">
@@ -104,7 +104,7 @@ if __name__ == "__main__":
               </span>
             </p>
           </div>
-          <div className="p-6 text-gray-300">
+          <div className="p-4 text-gray-300 sm:p-6">
             <div>
               <h3>{currentProblem?.description || "Loading description..."}</h3>
             </div>
@@ -114,7 +114,7 @@ if __name__ == "__main__":
                 currentProblem.testCases.map((item, index) => (
                   <div
                     key={index}
-                    className="mt-4 bg-gray-800 text-gray-300 rounded-md p-3 flex flex-col gap-2 border border-gray-700"
+                    className="mt-4 flex flex-col gap-2 overflow-x-auto rounded-md border border-gray-700 bg-gray-800 p-3 text-gray-300"
                   >
                     <h1 className="font-semibold">
                       Input: <span className="font-normal">{item.input}</span>
@@ -148,8 +148,8 @@ if __name__ == "__main__":
         </div>
 
         {/* Right section */}
-        <div className="md:w-1/2 w-full flex flex-col">
-          <div className="bg-gray-900 text-white p-4 flex justify-between items-center">
+        <div className="flex w-full flex-col lg:w-1/2">
+          <div className="flex items-center justify-between bg-gray-900 p-4 text-white">
             <select
               className="bg-gray-800 text-white rounded-sm outline-none p-2"
               value={languageId}
@@ -163,7 +163,7 @@ if __name__ == "__main__":
           <div className="flex-1 pt-4">
             <div className="h-full">
               <Editor
-                height="calc(100vh - 130px)" // Adjust height based on padding and select height
+                height="min(70vh, 620px)"
                 language={
                   languageId === 4
                     ? "java"
@@ -180,7 +180,7 @@ if __name__ == "__main__":
                 }}
               />
             </div>
-            <div className="flex justify-center md:absolute bottom-2 md:right-4  mt-4">
+            <div className="flex justify-center p-4 lg:justify-end">
               <button
                 className="text-green-600 border-2 border-green-800 hover:bg-green-700 hover:text-white rounded p-2"
                 onClick={handleSubmit}
@@ -193,7 +193,7 @@ if __name__ == "__main__":
       </div>
 
       {submissionResult && (
-        <div className="absolute md:top-[180px] md:left-[20px] bg-gray-700 text-white p-6 md:rounded-lg w-full md:w-[47%]">
+        <div className="fixed inset-x-0 bottom-0 z-50 max-h-[85vh] overflow-auto bg-gray-700 p-4 text-white shadow-2xl sm:p-6 lg:bottom-auto lg:left-5 lg:right-auto lg:top-44 lg:w-[47%] lg:rounded-lg">
           
           {(() => {
             const total = submissionResult.length;

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 const Card = ({ customClass }) => {
   return (
     <div className={customClass}>
-      <div className="w-[300px] h-[300px] bg-[#1e1d1d] rounded-md flex flex-col">
+      <div className="flex min-h-72 w-full flex-col rounded-md bg-[#1e1d1d]">
         <div className="flex justify-start items-center h-[50%] pl-3 bg-green-700 rounded-t-md">
           <h1 className="text-[20px] gap-3 ">
             Top <br />
@@ -20,7 +20,7 @@ const Card = ({ customClass }) => {
         </div>
       </div>
 
-      <div className="w-[300px] h-[300px] bg-[#1e1d1d] rounded-md flex flex-col">
+      <div className="flex min-h-72 w-full flex-col rounded-md bg-[#1e1d1d]">
         <div className="flex justify-start items-center h-[50%] pl-3 bg-green-700 rounded-t-md">
           <h1 className="text-[20px] gap-3 ">
             Top <br />
@@ -35,7 +35,7 @@ const Card = ({ customClass }) => {
           </button>
         </div>
       </div>
-      <div className="w-[300px] h-[300px] bg-[#1e1d1d] rounded-md flex flex-col">
+      <div className="flex min-h-72 w-full flex-col rounded-md bg-[#1e1d1d]">
         <div className="flex justify-start items-center h-[50%] pl-3 bg-green-700 rounded-t-md">
           <h1 className="text-[20px] gap-3 ">
             Top <br />
@@ -50,7 +50,7 @@ const Card = ({ customClass }) => {
           </button>
         </div>
       </div>
-      <div className="w-[300px] h-[300px] bg-[#1e1d1d] rounded-md flex flex-col">
+      <div className="flex min-h-72 w-full flex-col rounded-md bg-[#1e1d1d]">
         <div className="flex justify-start items-center h-[50%] pl-3 bg-green-700 rounded-t-md">
           <h1 className="text-[20px] gap-3 ">
             Top <br />

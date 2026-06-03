@@ -35,7 +35,7 @@ const Dashboard = () => {
 
   if (!stats) {
     return (
-      <div className="p-6 bg-gray-900 min-h-screen text-white">
+      <div className="min-h-screen bg-gray-900 p-4 text-white sm:p-6">
         Loading dashboard...
       </div>
     );
@@ -48,11 +48,11 @@ const Dashboard = () => {
   }));
 
   return (
-    <div className="p-6 bg-gray-900 min-h-screen text-white">
-      <h1 className="text-2xl font-bold mb-6">📊 Dashboard</h1>
+    <div className="min-h-screen bg-gray-900 p-4 text-white sm:p-6">
+      <h1 className="mb-6 text-xl font-bold sm:text-2xl">📊 Dashboard</h1>
 
      
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div className="bg-gray-800 p-4 rounded text-center">
           <p className="text-gray-400">Total</p>
           <p className="text-xl font-bold">{stats.total}</p>

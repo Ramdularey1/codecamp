@@ -31,11 +31,11 @@ const SubmissionDetails = () => {
   const total = testCases.length;
 
   return (
-    <div className="p-6 bg-gray-900 min-h-screen text-white">
+    <div className="min-h-screen bg-gray-900 p-4 text-white sm:p-6">
       
     
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">
+      <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="break-words text-xl font-bold sm:text-2xl">
           {submission.problem?.title || "Unknown Problem"}
         </h1>
 
@@ -70,9 +70,9 @@ const SubmissionDetails = () => {
       </div>
 
       
-      <div className="bg-black p-4 rounded mb-6 border border-gray-700 overflow-auto">
+      <div className="mb-6 overflow-auto rounded border border-gray-700 bg-black p-4">
         <h2 className="font-bold mb-2">Submitted Code:</h2>
-        <pre className="text-green-400 whitespace-pre-wrap text-sm">
+        <pre className="whitespace-pre-wrap break-words text-sm text-green-400">
           {submission.source_code}
         </pre>
       </div>
