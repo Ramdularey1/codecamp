@@ -5,9 +5,15 @@ import Navbar from "./Navbar";
 const ADMIN_EMAIL = "testadmin@gmail.com";
 const ADMIN_PASSWORD = "123456";
 
+const getTodayDate = () => new Date().toISOString().split("T")[0];
+const buildDateTimeForToday = (time) => `${getTodayDate()}T${time}`;
+
 const AdminContest = () => {
+  const loginUser = localStorage.getItem("user");
+  const user = loginUser ? JSON.parse(loginUser) : null;
+  const isLoggedInAdmin = user?.data?.email === ADMIN_EMAIL;
   const [isAdmin, setIsAdmin] = useState(
-    localStorage.getItem("codecamp-admin") === "true",
+    isLoggedInAdmin && localStorage.getItem("codecamp-admin") === "true",
   );
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [loginError, setLoginError] = useState("");
@@ -24,6 +30,12 @@ const AdminContest = () => {
   const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
+    if (!isLoggedInAdmin) {
+      localStorage.removeItem("codecamp-admin");
+      setIsAdmin(false);
+      return;
+    }
+
     if (!isAdmin) return;
 
     const fetchProblems = async () => {
@@ -43,7 +55,7 @@ const AdminContest = () => {
     };
 
     fetchProblems();
-  }, [isAdmin]);
+  }, [isAdmin, isLoggedInAdmin]);
 
   const handleAdminLogin = (event) => {
     event.preventDefault();
@@ -53,8 +65,12 @@ const AdminContest = () => {
       loginData.email === ADMIN_EMAIL &&
       loginData.password === ADMIN_PASSWORD
     ) {
-      localStorage.setItem("codecamp-admin", "true");
-      setIsAdmin(true);
+      if (isLoggedInAdmin) {
+        localStorage.setItem("codecamp-admin", "true");
+        setIsAdmin(true);
+      } else {
+        setLoginError("Please login to CodeCamp with the admin email first.");
+      }
       return;
     }
 
@@ -81,7 +97,10 @@ const AdminContest = () => {
       return;
     }
 
-    if (new Date(formData.endTime) <= new Date(formData.startTime)) {
+    const startDateTime = buildDateTimeForToday(formData.startTime);
+    const endDateTime = buildDateTimeForToday(formData.endTime);
+
+    if (new Date(endDateTime) <= new Date(startDateTime)) {
       setErrorMessage("End time must be after start time.");
       return;
     }
@@ -98,8 +117,8 @@ const AdminContest = () => {
         {
           title: formData.title,
           problems: selectedProblems,
-          startTime: formData.startTime,
-          endTime: formData.endTime,
+          startTime: startDateTime,
+          endTime: endDateTime,
         },
       );
 
@@ -125,7 +144,7 @@ const AdminContest = () => {
     setLoginData({ email: "", password: "" });
   };
 
-  if (!isAdmin) {
+  if (!isLoggedInAdmin || !isAdmin) {
     return (
       <>
         <Navbar />
@@ -135,7 +154,7 @@ const AdminContest = () => {
               <p className="eyebrow">Admin access</p>
               <h1 className="mt-2 text-2xl font-bold">Contest Admin Login</h1>
               <p className="mt-2 text-sm leading-6 text-slate-400">
-                Login with the admin credentials to create a new contest.
+                Login to CodeCamp as {ADMIN_EMAIL}, then enter the admin password to create a contest.
               </p>
 
               <div className="mt-6 space-y-5">
@@ -155,6 +174,7 @@ const AdminContest = () => {
                       }))
                     }
                     placeholder="testadmin@gmail.com"
+                    disabled={!isLoggedInAdmin}
                     required
                   />
                 </div>
@@ -185,7 +205,13 @@ const AdminContest = () => {
                   </p>
                 )}
 
-                <button type="submit" className="primary-button w-full">
+                {!isLoggedInAdmin && (
+                  <p className="rounded border border-yellow-500/30 bg-yellow-500/10 p-3 text-sm text-yellow-200">
+                    Admin panel unlock is available only after logging in with {ADMIN_EMAIL}.
+                  </p>
+                )}
+
+                <button type="submit" className="primary-button w-full" disabled={!isLoggedInAdmin}>
                   Unlock Admin Panel
                 </button>
               </div>
@@ -206,7 +232,7 @@ const AdminContest = () => {
               <p className="eyebrow">Admin panel</p>
               <h1 className="page-title mt-2">Create Contest</h1>
               <p className="page-subtitle mt-2">
-                Configure contest timing and choose the problems participants will solve.
+                Contest date is fixed to today ({getTodayDate()}). Choose start and end time, then select problems.
               </p>
             </div>
             <button className="secondary-button" onClick={handleLogoutAdmin}>
@@ -240,11 +266,11 @@ const AdminContest = () => {
 
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="contest-start">
-                    Start Time
+                    Start Time Today
                   </label>
                   <input
                     id="contest-start"
-                    type="datetime-local"
+                    type="time"
                     className="field w-full"
                     value={formData.startTime}
                     onChange={(event) =>
@@ -259,11 +285,11 @@ const AdminContest = () => {
 
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="contest-end">
-                    End Time
+                    End Time Today
                   </label>
                   <input
                     id="contest-end"
-                    type="datetime-local"
+                    type="time"
                     className="field w-full"
                     value={formData.endTime}
                     onChange={(event) =>

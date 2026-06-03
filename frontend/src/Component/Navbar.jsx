@@ -111,6 +111,7 @@ const Navbar = () => {
 
   const loginUser = localStorage.getItem("user");
   const user = loginUser ? JSON.parse(loginUser) : null;
+  const isAdminUser = user?.data?.email === "testadmin@gmail.com";
 
   const handleLogin = () => {
     navigate("/signup", { state: { from: "login" } });
@@ -143,7 +144,9 @@ const Navbar = () => {
             {/* ✅ Contest Link */}
             <Link className="rounded px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white" to={`/contest/${contestId}`}>Contest</Link>
             <Link className="rounded px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white" to={`/contest/${contestId}/leaderboard`}>Contest Leaderboard</Link>
-            <Link className="rounded px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white" to="/admin/contest">Admin</Link>
+            {isAdminUser && (
+              <Link className="rounded px-3 py-2 text-slate-300 transition hover:bg-white/5 hover:text-white" to="/admin/contest">Admin</Link>
+            )}
 
             <button className="secondary-button ml-2" onClick={handleAccount}>Account</button>
 
@@ -232,9 +235,11 @@ const Navbar = () => {
           >
             Contest Leaderboard
           </Link>
-          <Link to="/admin/contest" className="rounded px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white" onClick={toggleMenu}>
-            Admin
-          </Link>
+          {isAdminUser && (
+            <Link to="/admin/contest" className="rounded px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white" onClick={toggleMenu}>
+              Admin
+            </Link>
+          )}
           <Link to="/leaderboard" className="rounded px-3 py-2 text-slate-300 hover:bg-white/5 hover:text-white" onClick={toggleMenu}>
             Leaderboard
           </Link>
