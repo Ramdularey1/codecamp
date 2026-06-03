@@ -20,6 +20,7 @@ import Leaderboard from "./Component/Leaderboard";
 import Dashboard from "./Component/Dashboard";
 import ContestPage from "./Component/ContestPage";
 import ContestLeaderboard from "./Component/ContestLeaderboard";
+import AdminContest from "./Component/AdminContest";
 
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/contest/:id" element={<ContestPage />} />
             <Route path="/contest/:id/leaderboard" element={<ContestLeaderboard />} />
+            <Route path="/admin/contest" element={<AdminContest />} />
           </Routes>
           <Routes>
           <Route path="/login" element={<Login />} />
