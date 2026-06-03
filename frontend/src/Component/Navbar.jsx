@@ -119,7 +119,7 @@ const Navbar = () => {
   return (
     <>
       {/* 🔥 Navbar */}
-      <div className="sticky top-0 z-50 flex min-h-16 w-full items-center justify-between border-b border-white/10 bg-[#0b0f14]/95 px-4 text-white shadow-lg backdrop-blur sm:px-6 lg:px-10">
+      <div className="fixed left-0 top-0 z-50 flex min-h-16 w-full items-center justify-between border-b border-white/10 bg-[#0b0f14]/95 px-4 text-white shadow-lg backdrop-blur sm:px-6 lg:px-10">
         <div className="shrink-0">
           <Link to={"/"}>
             <img
@@ -194,7 +194,7 @@ const Navbar = () => {
       {isOpen && (
         <div
           ref={menuRef}
-          className="absolute right-0 top-16 z-50 flex w-full max-w-sm flex-col items-stretch gap-1 border border-white/10 bg-[#111827] p-4 text-white shadow-2xl lg:hidden"
+          className="fixed right-0 top-16 z-50 flex w-full max-w-sm flex-col items-stretch gap-1 border border-white/10 bg-[#111827] p-4 text-white shadow-2xl lg:hidden"
         >
           <Link
             to="/problem"
@@ -251,6 +251,7 @@ const Navbar = () => {
           </div>
         </div>
       )}
+      <div className="h-16" />
     </>
   );
 };
