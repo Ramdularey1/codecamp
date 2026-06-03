@@ -6,8 +6,28 @@ const ADMIN_EMAIL = "testadmin@gmail.com";
 const ADMIN_PASSWORD = "123456";
 const LOCAL_CONTESTS_KEY = "codecamp-created-contests";
 
-const getTodayDate = () => new Date().toISOString().split("T")[0];
-const buildDateTimeForToday = (time) => `${getTodayDate()}T${time}`;
+const padTimePart = (value) => String(value).padStart(2, "0");
+const getTodayDate = () => {
+  const date = new Date();
+  return [
+    date.getFullYear(),
+    padTimePart(date.getMonth() + 1),
+    padTimePart(date.getDate()),
+  ].join("-");
+};
+const getTimeValue = (date) =>
+  `${padTimePart(date.getHours())}:${padTimePart(date.getMinutes())}`;
+const getDefaultContestTimes = () => {
+  const start = new Date();
+  const end = new Date(start.getTime() + 60 * 60 * 1000);
+
+  return {
+    contestDate: getTodayDate(),
+    startTime: getTimeValue(start),
+    endTime: getTimeValue(end),
+  };
+};
+const buildDateTime = (date, time) => `${date}T${time}`;
 
 const AdminContest = () => {
   const loginUser = localStorage.getItem("user");
@@ -20,10 +40,12 @@ const AdminContest = () => {
   const [loginError, setLoginError] = useState("");
   const [problems, setProblems] = useState([]);
   const [selectedProblems, setSelectedProblems] = useState([]);
+  const defaultContestTimes = getDefaultContestTimes();
   const [formData, setFormData] = useState({
     title: "",
-    startTime: "",
-    endTime: "",
+    contestDate: defaultContestTimes.contestDate,
+    startTime: defaultContestTimes.startTime,
+    endTime: defaultContestTimes.endTime,
   });
   const [isLoadingProblems, setIsLoadingProblems] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -93,13 +115,18 @@ const AdminContest = () => {
     setMessage("");
     setErrorMessage("");
 
-    if (!formData.title || !formData.startTime || !formData.endTime) {
-      setErrorMessage("Please fill title, start time, and end time.");
+    if (
+      !formData.title ||
+      !formData.contestDate ||
+      !formData.startTime ||
+      !formData.endTime
+    ) {
+      setErrorMessage("Please fill title, date, start time, and end time.");
       return;
     }
 
-    const startDateTime = buildDateTimeForToday(formData.startTime);
-    const endDateTime = buildDateTimeForToday(formData.endTime);
+    const startDateTime = buildDateTime(formData.contestDate, formData.startTime);
+    const endDateTime = buildDateTime(formData.contestDate, formData.endTime);
 
     if (new Date(endDateTime) <= new Date(startDateTime)) {
       setErrorMessage("End time must be after start time.");
@@ -146,10 +173,16 @@ const AdminContest = () => {
       }
       setMessage(
         contestId
-          ? `Contest created successfully. It is now visible on the Contests page. Contest ID: ${contestId}`
+          ? `Contest created successfully for ${formData.contestDate}, ${formData.startTime} to ${formData.endTime}. It is now visible on the Contests page. Contest ID: ${contestId}`
           : "Contest created successfully.",
       );
-      setFormData({ title: "", startTime: "", endTime: "" });
+      const nextDefaultTimes = getDefaultContestTimes();
+      setFormData({
+        title: "",
+        contestDate: nextDefaultTimes.contestDate,
+        startTime: nextDefaultTimes.startTime,
+        endTime: nextDefaultTimes.endTime,
+      });
       setSelectedProblems([]);
     } catch (error) {
       console.log("Failed to create contest", error);
@@ -253,7 +286,7 @@ const AdminContest = () => {
               <p className="eyebrow">Admin panel</p>
               <h1 className="page-title mt-2">Create Contest</h1>
               <p className="page-subtitle mt-2">
-                Contest date is fixed to today ({getTodayDate()}). Choose start and end time, then select problems.
+                Choose the contest date, start time, end time, and problems participants will solve.
               </p>
             </div>
             <button className="secondary-button" onClick={handleLogoutAdmin}>
@@ -286,8 +319,27 @@ const AdminContest = () => {
                 </div>
 
                 <div>
+                  <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="contest-date">
+                    Contest Date
+                  </label>
+                  <input
+                    id="contest-date"
+                    type="date"
+                    className="field w-full"
+                    value={formData.contestDate}
+                    onChange={(event) =>
+                      setFormData((current) => ({
+                        ...current,
+                        contestDate: event.target.value,
+                      }))
+                    }
+                    required
+                  />
+                </div>
+
+                <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="contest-start">
-                    Start Time Today
+                    Start Time
                   </label>
                   <input
                     id="contest-start"
@@ -306,7 +358,7 @@ const AdminContest = () => {
 
                 <div>
                   <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="contest-end">
-                    End Time Today
+                    End Time
                   </label>
                   <input
                     id="contest-end"
