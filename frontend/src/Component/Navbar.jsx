@@ -91,31 +91,26 @@ const Navbar = () => {
     navigate("/signup", { state: { from: "register" } });
   };
 
-  const handleLogoutToggle = () => {
-    setIsLogoutVisible((prev) => !prev);
+  const handleLogoutToggle = async () => {
+    setIsLogoutVisible(false);
+    setIsOpen(false);
 
-    const logOut = async () => {
-      try {
-        const response = await axios.post(
-          "https://codecamp-iffd.onrender.com/api/v1/users/logout",
-          {},
-          { withCredentials: true }
-        );
-
-        if (response.status >= 200 && response.status < 300) {
-          localStorage.clear();
-          navigate("/");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    logOut();
+    try {
+      await axios.post(
+        "https://codecamp-iffd.onrender.com/api/v1/users/logout",
+        {},
+        { withCredentials: true },
+      );
+    } catch (error) {
+      console.log(error);
+    } finally {
+      localStorage.clear();
+      navigate("/");
+    }
   };
 
   const loginUser = localStorage.getItem("user");
-  const user = JSON.parse(loginUser);
+  const user = loginUser ? JSON.parse(loginUser) : null;
 
   const handleLogin = () => {
     navigate("/signup", { state: { from: "login" } });
