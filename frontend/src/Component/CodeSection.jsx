@@ -19,6 +19,8 @@ const CodeSections = () => {
   const [languageId, setLanguageId] = useState(4); 
   const [stdin, setStdin] = useState("");
   const [submissionResult, setSubmissionResult] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionError, setSubmissionError] = useState("");
 
   const boilerplateCode = {
     4: `// Java boilerplate
@@ -60,10 +62,15 @@ if __name__ == "__main__":
   const userId = user?.data?._id;
   const contestId = "69d9e4c4cb98e5f970ab167a";
   const handleSubmit = async () => {
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    setSubmissionError("");
+
     try {
-      const testCaseInputs = currentProblem.testCases.map(
+      const testCaseInputs = currentProblem?.testCases?.map(
         (testCase) => testCase.input,
-      );
+      ) || [];
       const response = await axios.post(
         "https://codecamp-iffd.onrender.com/api/v1/users/submit-code",
         {
@@ -80,6 +87,9 @@ if __name__ == "__main__":
       setSubmissionResult(response.data.data);
     } catch (error) {
       console.error("Error submitting code:", error);
+      setSubmissionError("Unable to submit code. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -165,10 +175,14 @@ if __name__ == "__main__":
             </div>
 
             <button
-              className="primary-button w-full sm:w-auto"
+              className="primary-button hidden sm:inline-flex"
               onClick={handleSubmit}
+              disabled={isSubmitting}
             >
-              Submit
+              {isSubmitting && (
+                <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+              )}
+              {isSubmitting ? "Submitting..." : "Submit"}
             </button>
           </div>
           <div className="flex-1 bg-[#0f172a] pt-4">
@@ -195,80 +209,97 @@ if __name__ == "__main__":
               <button
                 className="primary-button w-full"
                 onClick={handleSubmit}
+                disabled={isSubmitting}
               >
-                Submit
+                {isSubmitting && (
+                  <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                )}
+                {isSubmitting ? "Submitting..." : "Submit"}
               </button>
             </div>
           </div>
         </div>
       </div>
 
+      {submissionError && (
+        <div className="fixed inset-x-4 bottom-4 z-50 rounded border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200 shadow-2xl sm:left-auto sm:w-96">
+          {submissionError}
+        </div>
+      )}
+
       {submissionResult && (
-        <div className="fixed inset-x-0 bottom-0 z-50 max-h-[85vh] overflow-auto border border-white/10 bg-[#111827] p-4 text-white shadow-2xl sm:p-6 lg:bottom-auto lg:left-5 lg:right-auto lg:top-44 lg:w-[47%] lg:rounded-lg">
-          
+        <div className="fixed inset-0 z-50 flex items-end bg-black/60 p-0 backdrop-blur-sm sm:items-center sm:justify-center sm:p-6">
+          <div className="flex max-h-[90vh] w-full flex-col overflow-hidden rounded-t-lg border border-white/10 bg-[#111827] text-white shadow-2xl sm:max-w-4xl sm:rounded-lg lg:max-h-[82vh]">
           {(() => {
             const total = submissionResult.length;
             const passedCount = submissionResult.filter((t) => t.passed).length;
             const allPassed = total === passedCount;
 
             return (
-              <div className="mb-4">
-                <h2 className="text-xl font-bold">
-                  Status:{" "}
+              <div className="border-b border-slate-800 p-4 sm:p-5">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div>
+                <p className="eyebrow">Submission result</p>
+                <h2 className="mt-2 text-xl font-bold">
                   <span
                     className={allPassed ? "text-green-400" : "text-red-400"}
                   >
-                    {allPassed ? "Accepted ✅" : "Wrong Answer ❌"}
+                    {allPassed ? "Accepted" : "Wrong Answer"}
                   </span>
                 </h2>
 
-                <p className="text-sm text-slate-300">
+                <p className="mt-1 text-sm text-slate-300">
                   Passed {passedCount} / {total} test cases
                 </p>
+                  </div>
+                  <button
+                    className="secondary-button w-full border-red-500/50 text-red-200 hover:bg-red-600 hover:text-white sm:w-auto"
+                    onClick={handleClearResult}
+                  >
+                    Clear Result
+                  </button>
+                </div>
               </div>
             );
           })()}
 
-          <h2 className="text-lg font-bold mt-4">Submission Details:</h2>
-
-        
+          <div className="overflow-y-auto p-4 sm:p-5">
+          <h2 className="text-lg font-bold">Test Case Details</h2>
+          <div className="mt-4 grid gap-4 lg:grid-cols-2">
           {submissionResult.map((result, index) => (
             <div
               key={index}
-              className="panel-soft mt-4 p-3"
+              className="panel-soft min-w-0 p-4"
             >
-              <p className="font-semibold">Test Case {index + 1}</p>
-
-              <p>
-                <span className="font-semibold">Input:</span> {result.input}
-              </p>
-              <p>
-                <span className="font-semibold">Expected:</span>{" "}
-                {result.expectedOutput}
-              </p>
-              <p>
-                <span className="font-semibold">Actual:</span>{" "}
-                {result.actualOutput}
-              </p>
-
-              <p className="mt-1">
-                <span className="font-semibold">Status:</span>{" "}
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <p className="font-semibold text-white">Test Case {index + 1}</p>
                 <span
-                  className={result.passed ? "text-green-400" : "text-red-400"}
+                  className={`status-pill ${
+                    result.passed
+                      ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
+                      : "border-red-500/30 bg-red-500/10 text-red-300"
+                  }`}
                 >
                   {result.passed ? "Passed" : "Failed"}
                 </span>
+              </div>
+
+              <p className="break-words text-sm text-slate-300">
+                <span className="font-semibold text-slate-100">Input:</span> {result.input}
+              </p>
+              <p className="mt-2 break-words text-sm text-slate-300">
+                <span className="font-semibold text-slate-100">Expected:</span>{" "}
+                {result.expectedOutput}
+              </p>
+              <p className="mt-2 break-words text-sm text-slate-300">
+                <span className="font-semibold text-slate-100">Actual:</span>{" "}
+                {result.actualOutput}
               </p>
             </div>
           ))}
-
-          
-          <button
-            className="mt-4 rounded border border-red-500 px-3 py-1 text-red-300 hover:bg-red-600 hover:text-white"
-            onClick={handleClearResult}
-          >
-            Clear Result
-          </button>
+          </div>
+          </div>
+          </div>
         </div>
       )}
     </>
