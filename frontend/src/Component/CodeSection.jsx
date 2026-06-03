@@ -150,16 +150,26 @@ if __name__ == "__main__":
 
         {/* Right section */}
         <div className="panel flex w-full flex-col overflow-hidden lg:w-1/2">
-          <div className="flex items-center justify-between border-b border-slate-800 bg-[#111827] p-4 text-white">
-            <select
-              className="field"
-              value={languageId}
-              onChange={(e) => setLanguageId(parseInt(e.target.value))}
+          <div className="flex flex-col gap-3 border-b border-slate-800 bg-[#111827] p-4 text-white sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="eyebrow">Editor</p>
+              <select
+                className="field mt-2 w-full sm:w-40"
+                value={languageId}
+                onChange={(e) => setLanguageId(parseInt(e.target.value))}
+              >
+                <option value="4">Java</option>
+                <option value="2">C++</option>
+                <option value="28">Python</option>
+              </select>
+            </div>
+
+            <button
+              className="primary-button w-full sm:w-auto"
+              onClick={handleSubmit}
             >
-              <option value="4">Java</option>
-              <option value="2">C++</option>
-              <option value="28">Python</option>
-            </select>
+              Submit
+            </button>
           </div>
           <div className="flex-1 bg-[#0f172a] pt-4">
             <div className="h-full">
@@ -181,9 +191,9 @@ if __name__ == "__main__":
                 }}
               />
             </div>
-            <div className="flex justify-center p-4 lg:justify-end">
+            <div className="flex justify-center border-t border-slate-800 p-4 sm:hidden">
               <button
-                className="primary-button"
+                className="primary-button w-full"
                 onClick={handleSubmit}
               >
                 Submit
