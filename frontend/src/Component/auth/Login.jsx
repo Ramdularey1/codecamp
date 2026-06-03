@@ -1,12 +1,14 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const { email, password } = formData;
 
@@ -16,6 +18,11 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (isLoading) return;
+
+    setIsLoading(true);
+    setErrorMessage("");
+
     try {
       const response = await fetch("https://codecamp-iffd.onrender.com/api/v1/users/login", {
         method: "POST",
@@ -28,71 +35,115 @@ function Login() {
 
       const data = await response.json();
 
-      console.log(data);
-
-      if (200 <= response.status < 300) {
+      if (response.status >= 200 && response.status < 300) {
         localStorage.setItem("user", JSON.stringify(data));
-        const locla = localStorage.getItem("user");
-        console.log(locla);
         navigate("/");
+      } else {
+        setErrorMessage(data?.message || "Unable to login. Please try again.");
       }
-
-      console.log(response.status);
     } catch (error) {
       console.log("Error while logging in", error);
+      setErrorMessage("Something went wrong. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-black p-4 sm:p-10">
-      <form
-        onSubmit={handleSubmit}
-        className="bg-slate-500 w-full max-w-md p-6 rounded-lg shadow-md"
-      >
-        <div className="mb-4">
-          <label
-            className="block text-white text-sm font-bold mb-2"
-            htmlFor="email"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            name="email"
-            value={email}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 text-black leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-          />
+    <div className="flex min-h-screen items-center justify-center bg-[#0b0f14] px-4 py-8 text-white sm:px-6 lg:px-8">
+      <div className="grid w-full max-w-5xl overflow-hidden rounded-lg border border-white/10 bg-[#111827] shadow-2xl md:grid-cols-[0.9fr_1.1fr]">
+        <div className="hidden bg-[#0f172a] p-8 md:flex md:flex-col md:justify-between">
+          <div>
+            <img className="h-16 w-24 object-contain" src="/codecamp.png" alt="CodeCamp" />
+            <h1 className="mt-10 text-3xl font-bold leading-tight">
+              Practice smarter with CodeCamp.
+            </h1>
+            <p className="mt-4 text-sm leading-6 text-slate-300">
+              Sign in to continue solving problems, tracking submissions, and climbing the leaderboard.
+            </p>
+          </div>
+          <div className="rounded border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-100">
+            Build consistency one problem at a time.
+          </div>
         </div>
-        <div className="mb-6">
-          <label
-            className="block text-white text-sm font-bold mb-2"
-            htmlFor="password"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={handleChange}
-            required
-            className="w-full px-3 py-2 text-black leading-tight border rounded shadow appearance-none focus:outline-none focus:shadow-outline"
-          />
-        </div>
-        <div className="flex items-center justify-between">
+
+        <div className="p-6 sm:p-8 lg:p-10">
+          <div className="mb-8 md:hidden">
+            <img className="h-14 w-20 object-contain" src="/codecamp.png" alt="CodeCamp" />
+          </div>
+
+          <div className="mb-8">
+            <p className="text-sm font-medium uppercase tracking-wide text-emerald-400">
+              Welcome back
+            </p>
+            <h2 className="mt-2 text-2xl font-bold sm:text-3xl">Login to your account</h2>
+            <p className="mt-2 text-sm text-slate-400">
+              Enter your details to continue your coding journey.
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} className="space-y-5">
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="email">
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                name="email"
+                value={email}
+                onChange={handleChange}
+                required
+                disabled={isLoading}
+                placeholder="you@example.com"
+                className="w-full rounded border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-70"
+              />
+            </div>
+
+            <div>
+              <label className="mb-2 block text-sm font-semibold text-slate-200" htmlFor="password">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                name="password"
+                value={password}
+                onChange={handleChange}
+                required
+                disabled={isLoading}
+                placeholder="Enter your password"
+                className="w-full rounded border border-slate-700 bg-slate-950 px-4 py-3 text-white outline-none transition placeholder:text-slate-500 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 disabled:cursor-not-allowed disabled:opacity-70"
+              />
+            </div>
+
+            {errorMessage && (
+              <p className="rounded border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+                {errorMessage}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="flex h-12 w-full items-center justify-center gap-2 rounded bg-emerald-600 px-4 font-semibold text-white transition hover:bg-emerald-500 disabled:cursor-not-allowed disabled:bg-emerald-800"
+            >
+              {isLoading && (
+                <span className="h-5 w-5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+              )}
+              {isLoading ? "Logging in..." : "Login"}
+            </button>
+          </form>
+
           <button
-            type="submit"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            type="button"
+            onClick={() => navigate("/signup", { state: { from: "register" } })}
+            className="mt-6 w-full text-center text-sm text-slate-400 transition hover:text-emerald-300"
           >
-            Login
+            New to CodeCamp? Create an account
           </button>
         </div>
-        {/* <div className='mt-4'>
-          <p>Don't have an account? <span className='text-blue-400 cursor-pointer' >Sign up</span></p>
-        </div> */}
-      </form>
+      </div>
     </div>
   );
 }
